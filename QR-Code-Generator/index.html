@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -560,30 +561,29 @@
       border-radius: 4px;
     }
 
-    /* ---- Center wordmark overlay — BLACK box, WHITE wordmark ---- */
+    /* ---- Center wordmark overlay ---- */
     .qr-center-mark {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #000000;
+      background: #ffffff;
       border-radius: 8px;
-      padding: 6px 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      padding: 6px 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
       justify-content: center;
       pointer-events: none;
       z-index: 5;
-      max-width: 150px;
+      max-width: 140px;
     }
     .qr-center-mark img {
       max-width: 100%;
       height: 14px;
       width: auto;
       object-fit: contain;
-      /* Force the wordmark to appear WHITE on the black box */
-      filter: brightness(0) invert(1);
+      filter: brightness(0);
     }
 
     .qr-placeholder {
@@ -947,7 +947,7 @@
               <img src="https://deepbyto.github.io/favicon.ico" alt="DEEPBYTO">
             </div>
 
-            <!-- Center wordmark overlay (BLACK box + WHITE wordmark) -->
+            <!-- Center wordmark overlay -->
             <div class="qr-center-mark" id="qrCenterMark" style="display: none;">
               <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO">
             </div>
@@ -1157,16 +1157,15 @@
     /*
       DRAW BRANDING onto a canvas:
       - top-left corner: favicon in small white rounded square
-      - center: wordmark in BLACK rounded box with WHITE wordmark
+      - center: wordmark in white rounded box
     */
     function drawBrandingOnCanvas(ctx, canvasSize) {
       const cornerIcon = document.querySelector('#qrCornerIcon img');
       const centerMarkImg = document.querySelector('#qrCenterMark img');
 
-      const scale = canvasSize / 260; // wrapper is 260px
-
       // --- Corner icon (top-left) ---
       if (cornerIcon && cornerIcon.complete && cornerIcon.naturalWidth > 0) {
+        const scale = canvasSize / 260; // wrapper is 260px
         const boxSize = 26 * scale;
         const pad = 3 * scale;
         const x = 8 * scale;
@@ -1187,13 +1186,14 @@
         } catch (e) { /* ignore */ }
       }
 
-      // --- Center wordmark (BLACK box + WHITE wordmark) ---
+      // --- Center wordmark ---
       if (centerMarkImg && centerMarkImg.complete && centerMarkImg.naturalWidth > 0) {
+        const scale = canvasSize / 260;
         const markHeight = 14 * scale;
         const ratio = centerMarkImg.naturalWidth / centerMarkImg.naturalHeight;
-        const markWidth = Math.min(markHeight * ratio, 150 * scale);
+        const markWidth = Math.min(markHeight * ratio, 140 * scale);
 
-        const padX = 12 * scale;
+        const padX = 10 * scale;
         const padY = 6 * scale;
         const boxW = markWidth + padX * 2;
         const boxH = markHeight + padY * 2;
@@ -1203,26 +1203,30 @@
         const y = cy - boxH / 2;
         const radius = 8 * scale;
 
-        // Rounded BLACK box
+        // Rounded white box
         ctx.save();
         roundedRect(ctx, x, y, boxW, boxH, radius);
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.restore();
 
-        // Wordmark rendered WHITE using a temp canvas + filter
+        // Wordmark (dark) — same filter as CSS: brightness(0)
+        // We draw the original image, but since the source wordmark is white
+        // we can use a filter to darken it on the offscreen canvas
         try {
+          // Create a temp canvas for filtered wordmark
           const tmp = document.createElement('canvas');
           tmp.width = Math.max(1, Math.round(markWidth));
           tmp.height = Math.max(1, Math.round(markHeight));
           const tctx = tmp.getContext('2d');
+          // Try to use filter (supported in modern browsers)
           if ('filter' in tctx) {
-            tctx.filter = 'brightness(0) invert(1)'; // force white
+            tctx.filter = 'brightness(0)';
           }
           tctx.drawImage(centerMarkImg, 0, 0, tmp.width, tmp.height);
           ctx.drawImage(tmp, x + padX, y + padY, markWidth, markHeight);
         } catch (e) {
-          // Fallback: draw the raw wordmark
+          // Fallback: just draw original
           try {
             ctx.drawImage(centerMarkImg, x + padX, y + padY, markWidth, markHeight);
           } catch (e2) { /* ignore */ }
@@ -1275,7 +1279,7 @@
     }
 
     /*
-      DOWNLOAD SVG (with embedded branding — black center box, white wordmark)
+      DOWNLOAD SVG (with embedded branding)
     */
     function downloadSVG() {
       const qrCanvas = document.querySelector("#qrcode canvas");
@@ -1305,11 +1309,12 @@
 
       // --- center wordmark geometry ---
       const markHeight = 14 * scale;
+      // we don't know intrinsic ratio in SVG directly; assume ~4:1 for wordmark
       const assumedRatio = (centerMarkImg && centerMarkImg.naturalWidth && centerMarkImg.naturalHeight)
         ? (centerMarkImg.naturalWidth / centerMarkImg.naturalHeight)
         : 4;
-      const markWidth = Math.min(markHeight * assumedRatio, 150 * scale);
-      const padX = 12 * scale;
+      const markWidth = Math.min(markHeight * assumedRatio, 140 * scale);
+      const padX = 10 * scale;
       const padY = 6 * scale;
       const boxW = markWidth + padX * 2;
       const boxH = markHeight + padY * 2;
@@ -1317,7 +1322,6 @@
       const centerY = size / 2 - boxH / 2;
       const centerR = 8 * scale;
 
-      // SVG: BLACK center box, wordmark rendered as white via CSS filter inside SVG
       const svg =
 `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
   <image width="${size}" height="${size}" href="${qrImage}" />
@@ -1326,11 +1330,9 @@
   <rect x="${cornerX}" y="${cornerY}" width="${boxSize}" height="${boxSize}" rx="${cornerR}" ry="${cornerR}" fill="#ffffff" />
   <image x="${cornerX + pad}" y="${cornerY + pad}" width="${innerSize}" height="${innerSize}" href="${cornerHref}" preserveAspectRatio="xMidYMid meet" />
 
-  <!-- Center wordmark: BLACK box + WHITE wordmark -->
-  <rect x="${centerX}" y="${centerY}" width="${boxW}" height="${boxH}" rx="${centerR}" ry="${centerR}" fill="#000000" />
-  <g style="filter: brightness(0) invert(1);">
-    <image x="${centerX + padX}" y="${centerY + padY}" width="${markWidth}" height="${markHeight}" href="${wordmarkHref}" preserveAspectRatio="xMidYMid meet" />
-  </g>
+  <!-- Center wordmark box -->
+  <rect x="${centerX}" y="${centerY}" width="${boxW}" height="${boxH}" rx="${centerR}" ry="${centerR}" fill="#ffffff" />
+  <image x="${centerX + padX}" y="${centerY + padY}" width="${markWidth}" height="${markHeight}" href="${wordmarkHref}" preserveAspectRatio="xMidYMid meet" />
 </svg>`;
 
       const blob = new Blob([svg], { type: "image/svg+xml" });
