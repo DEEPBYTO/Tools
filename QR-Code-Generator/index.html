@@ -7,7 +7,7 @@
   <title>QR Code Generator | DEEPBYTO</title>
   <meta name="description" content="Create free QR codes for URLs, text, contact information and more with DEEPBYTO QR Code Generator.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://deepbyto.github.io/tools/qr-code-generator.html">
+  <link rel="canonical" href="https://deepbyto.github.io/Tools/QR-Code-Generator/">
   <link rel="icon" href="https://deepbyto.github.io/favicon.ico" type="image/x-icon" />
   <meta name="theme-color" content="#000000" />
 
@@ -519,19 +519,73 @@
       align-items: center;
       justify-content: center;
       padding: 15px;
-      margin: 10px auto 20px;
+      margin: 10px auto 12px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      position: relative;
     }
     #qrcode {
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
     #qrcode img,
     #qrcode canvas {
       max-width: 100%;
       height: auto;
+      display: block;
     }
+
+    /* ---- Corner icon (top-left) ---- */
+    .qr-corner-icon {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 26px;
+      height: 26px;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 6;
+    }
+    .qr-corner-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    /* ---- Center wordmark overlay — BLACK box, WHITE wordmark ---- */
+    .qr-center-mark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #000000;
+      border-radius: 8px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+      max-width: 150px;
+    }
+    .qr-center-mark img {
+      max-width: 100%;
+      height: 14px;
+      width: auto;
+      object-fit: contain;
+      /* Force the wordmark to appear WHITE on the black box */
+      filter: brightness(0) invert(1);
+    }
+
     .qr-placeholder {
       color: #777;
       font-size: 0.8rem;
@@ -610,7 +664,7 @@
     }
 
     /* ============================================
-       FOOTER (matching DEEPBYTO main site)
+       FOOTER
        ============================================ */
     .footer {
       padding: 48px 0 32px;
@@ -761,6 +815,20 @@
         width: 230px;
         height: 230px;
       }
+      .qr-corner-icon {
+        width: 22px;
+        height: 22px;
+        top: 6px;
+        left: 6px;
+        padding: 2px;
+      }
+      .qr-center-mark {
+        padding: 4px 8px;
+        max-width: 120px;
+      }
+      .qr-center-mark img {
+        height: 12px;
+      }
       .nav-brand .wordmark {
         height: 22px;
       }
@@ -791,6 +859,7 @@
         <li role="none"><a href="https://deepbyto.github.io/#services" role="menuitem">Services</a></li>
         <li role="none"><a href="https://deepbyto.github.io/#labs" role="menuitem">Labs</a></li>
         <li role="none"><a href="https://deepbyto.github.io/#projects" role="menuitem">Projects</a></li>
+        <li role="none"><a href="https://deepbyto.github.io/#tools" role="menuitem">Tools</a></li>
         <li role="none"><a href="https://deepbyto.github.io/#demos" role="menuitem">Demos</a></li>
         <li role="none"><a href="https://deepbyto.github.io/#contact" role="menuitem">Contact</a></li>
         <li role="none">
@@ -868,9 +937,19 @@
         <!-- QR PANEL -->
         <div class="panel qr-panel">
           <h2>Your QR Code</h2>
-          <div class="qr-wrapper">
+          <div class="qr-wrapper" id="qrWrapper">
             <div id="qrcode">
               <div class="qr-placeholder">Your QR code will appear here</div>
+            </div>
+
+            <!-- Top-left corner icon (favicon) -->
+            <div class="qr-corner-icon" id="qrCornerIcon" style="display: none;">
+              <img src="https://deepbyto.github.io/favicon.ico" alt="DEEPBYTO">
+            </div>
+
+            <!-- Center wordmark overlay (BLACK box + WHITE wordmark) -->
+            <div class="qr-center-mark" id="qrCenterMark" style="display: none;">
+              <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO">
             </div>
           </div>
 
@@ -925,7 +1004,7 @@
     </div>
   </section>
 
-  <!-- FOOTER (matching DEEPBYTO main site) -->
+  <!-- FOOTER -->
   <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
@@ -1014,7 +1093,6 @@
       });
     });
 
-    // ESC close mobile nav
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navLinks.classList.contains('open')) {
         navLinks.classList.remove('open');
@@ -1034,6 +1112,8 @@
       const background = document.getElementById("background").value;
       const qrContainer = document.getElementById("qrcode");
       const status = document.getElementById("status");
+      const cornerIcon = document.getElementById("qrCornerIcon");
+      const centerMark = document.getElementById("qrCenterMark");
 
       if (!text) {
         status.textContent = "Please enter some text or a URL.";
@@ -1051,6 +1131,9 @@
           colorLight: background,
           correctLevel: QRCode.CorrectLevel.H
         });
+
+        cornerIcon.style.display = 'flex';
+        centerMark.style.display = 'flex';
         status.textContent = "QR code generated successfully.";
       } catch (error) {
         console.error(error);
@@ -1066,26 +1149,133 @@
       document.getElementById("qrcode").innerHTML =
         '<div class="qr-placeholder">Your QR code will appear here</div>';
       document.getElementById("status").textContent = "";
+      document.getElementById("qrCornerIcon").style.display = 'none';
+      document.getElementById("qrCenterMark").style.display = 'none';
       currentQR = null;
     }
 
     /*
-      DOWNLOAD PNG
+      DRAW BRANDING onto a canvas:
+      - top-left corner: favicon in small white rounded square
+      - center: wordmark in BLACK rounded box with WHITE wordmark
+    */
+    function drawBrandingOnCanvas(ctx, canvasSize) {
+      const cornerIcon = document.querySelector('#qrCornerIcon img');
+      const centerMarkImg = document.querySelector('#qrCenterMark img');
+
+      const scale = canvasSize / 260; // wrapper is 260px
+
+      // --- Corner icon (top-left) ---
+      if (cornerIcon && cornerIcon.complete && cornerIcon.naturalWidth > 0) {
+        const boxSize = 26 * scale;
+        const pad = 3 * scale;
+        const x = 8 * scale;
+        const y = 8 * scale;
+        const radius = 6 * scale;
+
+        // Rounded white square
+        ctx.save();
+        roundedRect(ctx, x, y, boxSize, boxSize, radius);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.restore();
+
+        // Icon inside
+        const innerSize = boxSize - pad * 2;
+        try {
+          ctx.drawImage(cornerIcon, x + pad, y + pad, innerSize, innerSize);
+        } catch (e) { /* ignore */ }
+      }
+
+      // --- Center wordmark (BLACK box + WHITE wordmark) ---
+      if (centerMarkImg && centerMarkImg.complete && centerMarkImg.naturalWidth > 0) {
+        const markHeight = 14 * scale;
+        const ratio = centerMarkImg.naturalWidth / centerMarkImg.naturalHeight;
+        const markWidth = Math.min(markHeight * ratio, 150 * scale);
+
+        const padX = 12 * scale;
+        const padY = 6 * scale;
+        const boxW = markWidth + padX * 2;
+        const boxH = markHeight + padY * 2;
+        const cx = canvasSize / 2;
+        const cy = canvasSize / 2;
+        const x = cx - boxW / 2;
+        const y = cy - boxH / 2;
+        const radius = 8 * scale;
+
+        // Rounded BLACK box
+        ctx.save();
+        roundedRect(ctx, x, y, boxW, boxH, radius);
+        ctx.fillStyle = '#000000';
+        ctx.fill();
+        ctx.restore();
+
+        // Wordmark rendered WHITE using a temp canvas + filter
+        try {
+          const tmp = document.createElement('canvas');
+          tmp.width = Math.max(1, Math.round(markWidth));
+          tmp.height = Math.max(1, Math.round(markHeight));
+          const tctx = tmp.getContext('2d');
+          if ('filter' in tctx) {
+            tctx.filter = 'brightness(0) invert(1)'; // force white
+          }
+          tctx.drawImage(centerMarkImg, 0, 0, tmp.width, tmp.height);
+          ctx.drawImage(tmp, x + padX, y + padY, markWidth, markHeight);
+        } catch (e) {
+          // Fallback: draw the raw wordmark
+          try {
+            ctx.drawImage(centerMarkImg, x + padX, y + padY, markWidth, markHeight);
+          } catch (e2) { /* ignore */ }
+        }
+      }
+    }
+
+    // Helper: rounded rectangle path
+    function roundedRect(ctx, x, y, w, h, r) {
+      if (r > w / 2) r = w / 2;
+      if (r > h / 2) r = h / 2;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    /*
+      DOWNLOAD PNG (with branding composited)
     */
     function downloadPNG() {
-      const qr = document.querySelector("#qrcode canvas");
-      if (!qr) {
+      const qrCanvas = document.querySelector("#qrcode canvas");
+      if (!qrCanvas) {
         document.getElementById("status").textContent = "Generate a QR code first.";
         return;
       }
+
+      const finalCanvas = document.createElement('canvas');
+      finalCanvas.width = qrCanvas.width;
+      finalCanvas.height = qrCanvas.height;
+      const ctx = finalCanvas.getContext('2d');
+
+      // Draw QR
+      ctx.drawImage(qrCanvas, 0, 0);
+
+      // Draw corner icon + center wordmark
+      drawBrandingOnCanvas(ctx, qrCanvas.width);
+
       const link = document.createElement("a");
       link.download = "deepbyto-qr-code.png";
-      link.href = qr.toDataURL("image/png");
+      link.href = finalCanvas.toDataURL("image/png");
       link.click();
     }
 
     /*
-      DOWNLOAD SVG
+      DOWNLOAD SVG (with embedded branding — black center box, white wordmark)
     */
     function downloadSVG() {
       const qrCanvas = document.querySelector("#qrcode canvas");
@@ -1093,15 +1283,54 @@
         document.getElementById("status").textContent = "Generate a QR code first.";
         return;
       }
-      const size = qrCanvas.width;
-      const image = qrCanvas.toDataURL("image/png");
 
+      const size = qrCanvas.width;
+      const qrImage = qrCanvas.toDataURL("image/png");
+
+      const cornerIcon = document.querySelector('#qrCornerIcon img');
+      const centerMarkImg = document.querySelector('#qrCenterMark img');
+
+      const cornerHref = (cornerIcon && cornerIcon.src) ? cornerIcon.src : 'https://deepbyto.github.io/favicon.ico';
+      const wordmarkHref = (centerMarkImg && centerMarkImg.src) ? centerMarkImg.src : 'https://deepbyto.github.io/wordmark.png';
+
+      const scale = size / 260;
+
+      // --- corner icon geometry ---
+      const boxSize = 26 * scale;
+      const pad = 3 * scale;
+      const cornerX = 8 * scale;
+      const cornerY = 8 * scale;
+      const cornerR = 6 * scale;
+      const innerSize = boxSize - pad * 2;
+
+      // --- center wordmark geometry ---
+      const markHeight = 14 * scale;
+      const assumedRatio = (centerMarkImg && centerMarkImg.naturalWidth && centerMarkImg.naturalHeight)
+        ? (centerMarkImg.naturalWidth / centerMarkImg.naturalHeight)
+        : 4;
+      const markWidth = Math.min(markHeight * assumedRatio, 150 * scale);
+      const padX = 12 * scale;
+      const padY = 6 * scale;
+      const boxW = markWidth + padX * 2;
+      const boxH = markHeight + padY * 2;
+      const centerX = size / 2 - boxW / 2;
+      const centerY = size / 2 - boxH / 2;
+      const centerR = 8 * scale;
+
+      // SVG: BLACK center box, wordmark rendered as white via CSS filter inside SVG
       const svg =
-`<svg xmlns="http://www.w3.org/2000/svg"
-width="${size}"
-height="${size}"
-viewBox="0 0 ${size} ${size}">
-<image width="${size}" height="${size}" href="${image}" />
+`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+  <image width="${size}" height="${size}" href="${qrImage}" />
+
+  <!-- Top-left corner icon -->
+  <rect x="${cornerX}" y="${cornerY}" width="${boxSize}" height="${boxSize}" rx="${cornerR}" ry="${cornerR}" fill="#ffffff" />
+  <image x="${cornerX + pad}" y="${cornerY + pad}" width="${innerSize}" height="${innerSize}" href="${cornerHref}" preserveAspectRatio="xMidYMid meet" />
+
+  <!-- Center wordmark: BLACK box + WHITE wordmark -->
+  <rect x="${centerX}" y="${centerY}" width="${boxW}" height="${boxH}" rx="${centerR}" ry="${centerR}" fill="#000000" />
+  <g style="filter: brightness(0) invert(1);">
+    <image x="${centerX + padX}" y="${centerY + padY}" width="${markWidth}" height="${markHeight}" href="${wordmarkHref}" preserveAspectRatio="xMidYMid meet" />
+  </g>
 </svg>`;
 
       const blob = new Blob([svg], { type: "image/svg+xml" });
