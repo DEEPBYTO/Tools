@@ -21,6 +21,8 @@
 
   <!-- QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- HD Screenshot Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     * {
@@ -558,6 +560,11 @@
     }
     .download-buttons button {
       flex: 1;
+    }
+    .download-buttons button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none !important;
     }
     .status {
       min-height: 22px;
@@ -1185,31 +1192,90 @@
     }
 
     /*
-      DOWNLOAD — auto screenshot of the QR with branding baked in
+      DOWNLOAD — HD screenshot of the visible QR preview.
+      Captures the actual QR preview area instead of exporting the QR canvas directly.
     */
-    function downloadQR() {
+    async function downloadQR() {
+      const qrWrapper = document.getElementById("qrWrapper");
       const qrCanvas = document.querySelector("#qrcode canvas");
+      const status = document.getElementById("status");
+
       if (!qrCanvas) {
-        document.getElementById("status").textContent = "Generate a QR code first.";
+        status.textContent = "Generate a QR code first.";
         return;
       }
 
-      const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = qrCanvas.width;
-      finalCanvas.height = qrCanvas.height;
-      const ctx = finalCanvas.getContext('2d');
+      if (typeof html2canvas === "undefined") {
+        status.textContent = "Screenshot service is not ready. Please try again.";
+        return;
+      }
 
-      // Draw QR
-      ctx.drawImage(qrCanvas, 0, 0);
+      const button = document.querySelector(".download-buttons button");
+      const originalText = button ? button.innerHTML : "";
 
-      // Draw corner icon + center wordmark
-      drawBrandingOnCanvas(ctx, qrCanvas.width);
+      try {
+        if (button) {
+          button.disabled = true;
+          button.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i>Preparing HD...';
+        }
+        status.textContent = "Creating HD screenshot...";
 
-      const link = document.createElement("a");
-      link.download = "deepbyto-qr-code.png";
-      link.href = finalCanvas.toDataURL("image/png");
-      link.click();
-      document.getElementById("status").textContent = "Downloaded successfully.";
+        /*
+          Wait briefly so the browser finishes rendering the QR and branding.
+          Scale 4 gives a high-resolution PNG while keeping the visible design
+          identical to the QR preview.
+        */
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        const scale = 4;
+
+        const canvas = await html2canvas(qrWrapper, {
+          scale: scale,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: null,
+          logging: false,
+          imageTimeout: 15000,
+          removeContainer: true
+        });
+
+        // Export the screenshot as a high-quality PNG.
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            status.textContent = "Could not create the HD screenshot.";
+            if (button) {
+              button.disabled = false;
+              button.innerHTML = originalText;
+            }
+            return;
+          }
+
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = "deepbyto-qr-code-hd.png";
+          link.href = url;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+          status.textContent = "HD QR screenshot downloaded successfully.";
+
+          if (button) {
+            button.disabled = false;
+            button.innerHTML = originalText;
+          }
+        }, "image/png");
+      } catch (error) {
+        console.error("HD screenshot error:", error);
+        status.textContent = "Could not create the HD screenshot. Please try again.";
+
+        if (button) {
+          button.disabled = false;
+          button.innerHTML = originalText;
+        }
+      }
     }
 
     // Generate default QR on page load
