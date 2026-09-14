@@ -892,7 +892,7 @@
 
             <!-- Center wordmark overlay -->
             <div class="qr-center-mark" id="qrCenterMark" style="display: none;">
-              <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO">
+              <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO" id="qrCenterMarkImg">
             </div>
           </div>
 
@@ -1102,103 +1102,15 @@
     }
 
     /*
-      Helper: rounded rectangle path
-    */
-    function roundedRect(ctx, x, y, w, h, r) {
-      if (r > w / 2) r = w / 2;
-      if (r > h / 2) r = h / 2;
-      ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.lineTo(x + w - r, y);
-      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-      ctx.lineTo(x + w, y + h - r);
-      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-      ctx.lineTo(x + r, y + h);
-      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-      ctx.lineTo(x, y + r);
-      ctx.quadraticCurveTo(x, y, x + r, y);
-      ctx.closePath();
-    }
-
-    /*
-      DRAW BRANDING onto a canvas:
-      - top-left corner: favicon in small white rounded square
-      - center: wordmark in white rounded box
-    */
-    function drawBrandingOnCanvas(ctx, canvasSize) {
-      const cornerIcon = document.querySelector('#qrCornerIcon img');
-      const centerMarkImg = document.querySelector('#qrCenterMark img');
-
-      const scale = canvasSize / 260; // wrapper is 260px
-
-      // --- Corner icon (top-left) ---
-      if (cornerIcon && cornerIcon.complete && cornerIcon.naturalWidth > 0) {
-        const boxSize = 26 * scale;
-        const pad = 3 * scale;
-        const x = 8 * scale;
-        const y = 8 * scale;
-        const radius = 6 * scale;
-
-        ctx.save();
-        roundedRect(ctx, x, y, boxSize, boxSize, radius);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-        ctx.restore();
-
-        const innerSize = boxSize - pad * 2;
-        try {
-          ctx.drawImage(cornerIcon, x + pad, y + pad, innerSize, innerSize);
-        } catch (e) { /* ignore */ }
-      }
-
-      // --- Center wordmark ---
-      if (centerMarkImg && centerMarkImg.complete && centerMarkImg.naturalWidth > 0) {
-        const markHeight = 14 * scale;
-        const ratio = centerMarkImg.naturalWidth / centerMarkImg.naturalHeight;
-        const markWidth = Math.min(markHeight * ratio, 140 * scale);
-
-        const padX = 10 * scale;
-        const padY = 6 * scale;
-        const boxW = markWidth + padX * 2;
-        const boxH = markHeight + padY * 2;
-        const cx = canvasSize / 2;
-        const cy = canvasSize / 2;
-        const x = cx - boxW / 2;
-        const y = cy - boxH / 2;
-        const radius = 8 * scale;
-
-        ctx.save();
-        roundedRect(ctx, x, y, boxW, boxH, radius);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-        ctx.restore();
-
-        try {
-          const tmp = document.createElement('canvas');
-          tmp.width = Math.max(1, Math.round(markWidth));
-          tmp.height = Math.max(1, Math.round(markHeight));
-          const tctx = tmp.getContext('2d');
-          if ('filter' in tctx) {
-            tctx.filter = 'brightness(0)';
-          }
-          tctx.drawImage(centerMarkImg, 0, 0, tmp.width, tmp.height);
-          ctx.drawImage(tmp, x + padX, y + padY, markWidth, markHeight);
-        } catch (e) {
-          try {
-            ctx.drawImage(centerMarkImg, x + padX, y + padY, markWidth, markHeight);
-          } catch (e2) { /* ignore */ }
-        }
-      }
-    }
-
-    /*
       DOWNLOAD — HD screenshot of the visible QR preview.
-      Captures the actual QR preview area instead of exporting the QR canvas directly.
+      The center wordmark is temporarily forced to black during the capture
+      so it always appears black in the downloaded PNG — even in dark theme.
     */
     async function downloadQR() {
       const qrWrapper = document.getElementById("qrWrapper");
       const qrCanvas = document.querySelector("#qrcode canvas");
       const status = document.getElementById("status");
+      const centerMarkImg = document.getElementById("qrCenterMarkImg");
 
       if (!qrCanvas) {
         status.textContent = "Generate a QR code first.";
@@ -1213,6 +1125,10 @@
       const button = document.querySelector(".download-buttons button");
       const originalText = button ? button.innerHTML : "";
 
+      // Save original inline styles so we can restore them after capture
+      const originalFilter = centerMarkImg ? centerMarkImg.style.filter : "";
+      const originalWebkitFilter = centerMarkImg ? centerMarkImg.style.webkitFilter : "";
+
       try {
         if (button) {
           button.disabled = true;
@@ -1221,10 +1137,17 @@
         status.textContent = "Creating HD screenshot...";
 
         /*
-          Wait briefly so the browser finishes rendering the QR and branding.
-          Scale 4 gives a high-resolution PNG while keeping the visible design
-          identical to the QR preview.
+          Force the wordmark to render pure black during the capture,
+          regardless of the current theme. This ensures the downloaded
+          PNG always has a black wordmark (which is what looks best
+          on the white center box inside the QR).
         */
+        if (centerMarkImg) {
+          centerMarkImg.style.filter = "brightness(0)";
+          centerMarkImg.style.webkitFilter = "brightness(0)";
+        }
+
+        // Wait two animation frames so the style change is fully applied
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
         const scale = 4;
@@ -1236,7 +1159,15 @@
           backgroundColor: null,
           logging: false,
           imageTimeout: 15000,
-          removeContainer: true
+          removeContainer: true,
+          // Ignore any global CSS filter that might affect the capture
+          onclone: (clonedDoc) => {
+            const clonedImg = clonedDoc.getElementById('qrCenterMarkImg');
+            if (clonedImg) {
+              clonedImg.style.filter = 'brightness(0)';
+              clonedImg.style.webkitFilter = 'brightness(0)';
+            }
+          }
         });
 
         // Export the screenshot as a high-quality PNG.
@@ -1274,6 +1205,12 @@
         if (button) {
           button.disabled = false;
           button.innerHTML = originalText;
+        }
+      } finally {
+        // Always restore the original filter styles
+        if (centerMarkImg) {
+          centerMarkImg.style.filter = originalFilter;
+          centerMarkImg.style.webkitFilter = originalWebkitFilter;
         }
       }
     }
