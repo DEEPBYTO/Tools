@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Word Counter | DEEPBYTO</title>
+
+  <meta name="description" content="Count words, characters, sentences, and paragraphs instantly. Check reading time, speaking time, and keyword density with DEEPBYTO Word Counter.">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical" href="https://deepbyto.github.io/Tools/Word-Counter/">
+  <link rel="icon" href="https://deepbyto.github.io/favicon.ico" type="image/x-icon">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph / Social Media Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Word Counter | DEEPBYTO">
+  <meta property="og:description" content="Count words, characters, sentences, and paragraphs instantly.">
+  <meta property="og:url" content="https://deepbyto.github.io/Tools/Word-Counter/">
+  <meta property="og:image" content="https://raw.githubusercontent.com/DEEPBYTO/Tools/main/Word-Counter/preview.png">
+  <meta property="og:image:alt" content="DEEPBYTO Word Counter">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="DEEPBYTO">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Word Counter | DEEPBYTO">
+  <meta name="twitter:description" content="Count words, characters, sentences, and paragraphs instantly.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/DEEPBYTO/Tools/main/Word-Counter/preview.png">
+  <meta name="twitter:image:alt" content="DEEPBYTO Word Counter">
+  <meta name="twitter:site" content="@deepbyto">
+  <meta name="twitter:creator" content="@deepbyto">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-card: rgba(20, 20, 20, 0.85);
+      --accent: #ffffff;
+      --accent-dim: rgba(255, 255, 255, 0.1);
+      --accent-glow: rgba(255, 255, 255, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(10, 10, 10, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --shadow-color: rgba(0,0,0,0.6);
+      --btn-primary-bg: #ffffff;
+      --btn-primary-color: #000000;
+      --btn-primary-hover: #cccccc;
+      --btn-secondary-border: rgba(255,255,255,0.25);
+      --btn-secondary-hover-bg: rgba(255,255,255,0.1);
+      --badge-bg: rgba(255,255,255,0.08);
+      --badge-border: rgba(255,255,255,0.15);
+      --nav-bg: rgba(0,0,0,0.7);
+      --nav-scrolled: rgba(0,0,0,0.95);
+      --wordmark-filter: brightness(0) invert(1);
+      --footer-border: rgba(255,255,255,0.08);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --purple: #a855f7;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f5f5f5;
+      --bg-secondary: #eeeeee;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --accent: #000000;
+      --accent-dim: rgba(0, 0, 0, 0.08);
+      --accent-glow: rgba(0, 0, 0, 0.15);
+      --text-primary: #111111;
+      --text-secondary: #333333;
+      --text-muted: #666666;
+      --border-subtle: rgba(0, 0, 0, 0.1);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(0, 0, 0, 0.12);
+      --shadow-color: rgba(0,0,0,0.15);
+      --btn-primary-bg: #000000;
+      --btn-primary-color: #ffffff;
+      --btn-primary-hover: #333333;
+      --btn-secondary-border: rgba(0,0,0,0.25);
+      --btn-secondary-hover-bg: rgba(0,0,0,0.08);
+      --badge-bg: rgba(0,0,0,0.06);
+      --badge-border: rgba(0,0,0,0.12);
+      --nav-bg: rgba(255,255,255,0.85);
+      --nav-scrolled: rgba(255,255,255,0.95);
+      --wordmark-filter: brightness(0) invert(0);
+      --footer-border: rgba(0,0,0,0.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 16px 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      border-bottom: 1px solid var(--glass-border);
+      transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .navbar.scrolled {
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
+      box-shadow: 0 4px 25px var(--shadow-color);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-brand .wordmark {
+      height: 26px;
+      width: auto;
+      display: block;
+      filter: var(--wordmark-filter);
+      transition: filter 0.4s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      transition: color var(--transition);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+      border-radius: 4px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--text-primary);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--badge-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 6px 14px 6px 10px;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-sans);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: var(--accent-dim);
+    }
+
+    .theme-toggle i {
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle .toggle-icon {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* NAV CTA */
+    .nav-cta {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color) !important;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-cta:hover {
+      background: var(--btn-primary-hover);
+      color: var(--btn-primary-color) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px var(--accent-glow);
+    }
+
+    .nav-cta::after {
+      display: none !important;
+    }
+
+    /* HAMBURGER */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .nav-toggle:hover {
+      background: var(--accent-dim);
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 140px 0 50px;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px 6px 8px;
+      border-radius: 50px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+      backdrop-filter: blur(4px);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+    }
+
+    .hero-badge .badge-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.75);
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 650px;
+      line-height: 1.8;
+      margin: 0 auto 32px;
+    }
+
+    /* SECTION LABELS */
+    .section-label {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      background: var(--accent-dim);
+      padding: 4px 14px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+      color: var(--text-primary);
+    }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 18px 14px;
+      text-align: center;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px var(--shadow-color);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-card .stat-icon {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .stat-card .stat-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* TOOL SECTION */
+    .tool-section {
+      padding: 0 0 70px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 22px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.4);
+      transition: border-color var(--transition), background 0.4s ease;
+    }
+
+    .panel:hover {
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    [data-theme="light"] .panel:hover {
+      border-color: rgba(0,0,0,0.2);
+    }
+
+    .panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel h2 i {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 280px;
+      resize: vertical;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      color: var(--text-primary);
+      outline: none;
+      font: inherit;
+      font-size: 0.95rem;
+      transition: .2s;
+      font-family: var(--font-sans);
+      line-height: 1.7;
+    }
+
+    [data-theme="light"] textarea {
+      background: rgba(255,255,255,0.6);
+    }
+
+    textarea:focus {
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+    [data-theme="light"] textarea:focus {
+      border-color: rgba(0,0,0,0.3);
+      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
+    }
+
+    textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+      font-family: var(--font-sans);
+      letter-spacing: 0.02em;
+    }
+
+    .primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      flex: 1;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .primary:hover {
+      background: var(--btn-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--btn-secondary-border);
+    }
+
+    .secondary:hover {
+      background: var(--btn-secondary-hover-bg);
+      border-color: var(--accent);
+    }
+
+    /* SIDE PANEL */
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .time-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .time-item {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 12px;
+      text-align: center;
+      transition: border-color 0.2s ease;
+    }
+
+    [data-theme="light"] .time-item {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .time-item:hover {
+      border-color: var(--accent);
+    }
+
+    .time-item .time-value {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .time-item .time-label {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .time-item i {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* KEYWORD DENSITY */
+    .keyword-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .keyword-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .keyword-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .keyword-list::-webkit-scrollbar-thumb {
+      background: var(--accent-dim);
+      border-radius: 4px;
+    }
+
+    .keyword-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      transition: border-color 0.2s ease;
+    }
+
+    [data-theme="light"] .keyword-item {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .keyword-item:hover {
+      border-color: var(--accent);
+    }
+
+    .keyword-item .kw-word {
+      flex: 1;
+      color: var(--text-primary);
+      font-weight: 500;
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .keyword-item .kw-count {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 2px 8px;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .keyword-item .kw-percent {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 42px;
+      text-align: right;
+    }
+
+    .empty-keywords {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    /* SOCIAL LIMITS */
+    .social-limits {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      font-size: 0.78rem;
+      transition: border-color 0.2s ease;
+    }
+
+    [data-theme="light"] .social-item {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .social-item .social-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .social-item .social-name {
+      flex: 1;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .social-item .social-progress {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .social-item .social-progress.over {
+      color: var(--danger);
+    }
+
+    .social-item .social-progress.ok {
+      color: var(--success);
+    }
+
+    /* STATUS */
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-align: center;
+      transition: color 0.2s;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    /* FEATURES */
+    .info {
+      padding: 60px 0 90px;
+      position: relative;
+      z-index: 2;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.4s ease, border-color 0.3s ease;
+    }
+
+    .info .container {
+      text-align: center;
+    }
+
+    .info h2 {
+      margin-bottom: 48px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: left;
+    }
+
+    .feature {
+      padding: 26px 22px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all var(--transition);
+    }
+
+    .feature:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px var(--shadow-color);
+    }
+
+    .feature .feature-icon {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .feature h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .feature p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--footer-border);
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease, border-color 0.3s ease;
+    }
+
+    .footer .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-brand .fb-name {
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-brand .fb-name img {
+      height: 22px;
+      width: auto;
+      filter: var(--wordmark-filter);
+      transition: filter 0.4s ease;
+    }
+
+    .footer-brand .fb-tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px 28px;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-bottom {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--footer-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-socials a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-socials a:hover {
+      color: var(--text-primary);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .tool-grid {
+        grid-template-columns: 1fr 320px;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--bg-primary);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+        padding: 40px;
+        transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border-left: 1px solid var(--glass-border);
+      }
+
+      .nav-links.open {
+        right: 0;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+      }
+
+      .nav-toggle {
+        display: flex;
+        z-index: 1001;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-links .nav-cta-mobile {
+        display: inline-block !important;
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+
+      .theme-toggle .toggle-text {
+        display: none;
+      }
+
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .hero {
+        padding: 120px 0 30px;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .panel {
+        padding: 22px;
+      }
+
+      textarea {
+        min-height: 200px;
+      }
+
+      .nav-brand .wordmark {
+        height: 22px;
+      }
+
+      .hero-title {
+        letter-spacing: -1px;
+      }
+
+      .info {
+        padding: 50px 0 70px;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+
+      .buttons button {
+        min-width: 100%;
+      }
+
+      .time-box {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+
+      <a href="https://deepbyto.github.io/" class="nav-brand" aria-label="DEEPBYTO home">
+        <img
+          src="https://deepbyto.github.io/wordmark.png"
+          alt="DEEPBYTO"
+          class="wordmark"
+        >
+      </a>
+
+      <ul class="nav-links" id="navLinks" role="menubar">
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#about" role="menuitem">About</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#services" role="menuitem">Services</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#labs" role="menuitem">Labs</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#projects" role="menuitem">Projects</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#tools" role="menuitem">Tools</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#demos" role="menuitem">Demos</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#contact" role="menuitem">Contact</a>
+        </li>
+
+        <li role="none">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="toggle-icon">
+              <i class="fas fa-moon" id="themeIcon"></i>
+            </span>
+            <span class="toggle-text" id="themeLabel">Dark</span>
+          </button>
+        </li>
+
+        <li role="none" class="nav-cta-mobile" style="display:none;">
+          <a
+            href="https://deepbyto.github.io/#contact"
+            class="nav-cta"
+            style="display:inline-block;"
+          >
+            Contact
+          </a>
+        </li>
+
+      </ul>
+
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Free Online Tool
+        </div>
+
+        <h1 class="hero-title">
+          Word <span class="highlight">Counter</span>
+        </h1>
+
+        <p class="hero-description">
+          Count words, characters, sentences, and paragraphs instantly.
+          Check reading time, speaking time, and keyword density as you type.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- STATS STRIP -->
+  <section class="tool-section" style="padding-top: 0; padding-bottom: 20px;">
+    <div class="container">
+      <div class="stats-strip">
+        <div class="stat-card">
+          <i class="fas fa-font stat-icon"></i>
+          <div class="stat-value" id="statWords">0</div>
+          <div class="stat-label">Words</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-text-width stat-icon"></i>
+          <div class="stat-value" id="statChars">0</div>
+          <div class="stat-label">Characters</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-paragraph stat-icon"></i>
+          <div class="stat-value" id="statSentences">0</div>
+          <div class="stat-label">Sentences</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-align-left stat-icon"></i>
+          <div class="stat-value" id="statParagraphs">0</div>
+          <div class="stat-label">Paragraphs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL -->
+  <section class="tool-section">
+
+    <div class="container">
+
+      <div class="tool-grid">
+
+        <!-- INPUT PANEL -->
+        <div class="panel">
+
+          <h2>
+            <i class="fas fa-pen-fancy"></i>
+            Your Text
+          </h2>
+
+          <label for="textInput">Type or paste your text below</label>
+
+          <textarea
+            id="textInput"
+            placeholder="Start typing or paste your text here... The counts update in real-time as you type."
+            oninput="analyzeText()"
+            onpaste="setTimeout(analyzeText, 10)"
+          ></textarea>
+
+          <div class="buttons">
+
+            <button
+              class="primary"
+              onclick="copyText()"
+            >
+              <i class="fas fa-copy" style="margin-right: 6px;"></i>
+              Copy Text
+            </button>
+
+            <button
+              class="secondary"
+              onclick="downloadText()"
+            >
+              <i class="fas fa-download" style="margin-right: 6px;"></i>
+              Download .txt
+            </button>
+
+            <button
+              class="secondary"
+              onclick="clearText()"
+            >
+              <i class="fas fa-trash" style="margin-right: 6px;"></i>
+              Clear
+            </button>
+
+          </div>
+
+          <div class="status" id="status"></div>
+
+        </div>
+
+        <!-- SIDE PANEL -->
+        <div class="side-panel">
+
+          <!-- READING / SPEAKING TIME -->
+          <div class="panel">
+
+            <h2>
+              <i class="fas fa-clock"></i>
+              Time Estimates
+            </h2>
+
+            <div class="time-box">
+              <div class="time-item">
+                <i class="fas fa-book-open"></i>
+                <div class="time-value" id="readingTime">0s</div>
+                <div class="time-label">Reading</div>
+              </div>
+              <div class="time-item">
+                <i class="fas fa-microphone"></i>
+                <div class="time-value" id="speakingTime">0s</div>
+                <div class="time-label">Speaking</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- KEYWORD DENSITY -->
+          <div class="panel">
+
+            <h2>
+              <i class="fas fa-chart-bar"></i>
+              Top Keywords
+            </h2>
+
+            <div class="keyword-list" id="keywordList">
+              <div class="empty-keywords">Start typing to see top keywords</div>
+            </div>
+
+          </div>
+
+          <!-- SOCIAL MEDIA LIMITS -->
+          <div class="panel">
+
+            <h2>
+              <i class="fas fa-share-alt"></i>
+              Social Limits
+            </h2>
+
+            <div class="social-limits" id="socialLimits">
+
+              <div class="social-item">
+                <div class="social-icon"><i class="fab fa-twitter"></i></div>
+                <div class="social-name">Twitter / X</div>
+                <div class="social-progress ok" id="limitTwitter">0 / 280</div>
+              </div>
+
+              <div class="social-item">
+                <div class="social-icon"><i class="fab fa-instagram"></i></div>
+                <div class="social-name">Instagram</div>
+                <div class="social-progress ok" id="limitInstagram">0 / 2200</div>
+              </div>
+
+              <div class="social-item">
+                <div class="social-icon"><i class="fab fa-facebook-f"></i></div>
+                <div class="social-name">Facebook</div>
+                <div class="social-progress ok" id="limitFacebook">0 / 63206</div>
+              </div>
+
+              <div class="social-item">
+                <div class="social-icon"><i class="fab fa-linkedin-in"></i></div>
+                <div class="social-name">LinkedIn</div>
+                <div class="social-progress ok" id="limitLinkedin">0 / 3000</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+  <section class="info">
+
+    <div class="container">
+
+      <span class="section-label">
+        Features
+      </span>
+
+      <h2 class="section-title">
+        Why Use Our <span class="highlight">Counter?</span>
+      </h2>
+
+      <div class="features">
+
+        <div class="feature">
+          <i class="fas fa-bolt feature-icon"></i>
+          <h3>Real-Time Updates</h3>
+          <p>
+            Counts update instantly as you type — no button press needed.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-chart-pie feature-icon"></i>
+          <h3>Keyword Density</h3>
+          <p>
+            See the top 10 most used words and their percentage in your text.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-clock feature-icon"></i>
+          <h3>Reading &amp; Speaking Time</h3>
+          <p>
+            Know how long it takes to read or speak your content aloud.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-share-alt feature-icon"></i>
+          <h3>Social Media Limits</h3>
+          <p>
+            Track your text against Twitter, Instagram, Facebook,
+            and LinkedIn limits.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-lock feature-icon"></i>
+          <h3>100% Private</h3>
+          <p>
+            Everything runs in your browser. Your text never
+            leaves your device.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-mobile-alt feature-icon"></i>
+          <h3>Works Everywhere</h3>
+          <p>
+            Perfect on phones, tablets, and desktops. No sign-up required.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+
+          <div class="fb-name">
+            <img
+              src="https://deepbyto.github.io/wordmark.png"
+              alt="DEEPBYTO"
+            >
+          </div>
+
+          <div class="fb-tagline">
+            AI &amp; Software Innovation
+          </div>
+
+        </div>
+
+        <div class="footer-links">
+
+          <a
+            href="https://github.com/DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://x.com/deepbyto"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            X
+          </a>
+
+          <a
+            href="https://youtube.com/@DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            YouTube
+          </a>
+
+          <a
+            href="https://discord.gg/HWhBYHjApe"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord
+          </a>
+
+          <a href="mailto:deepbyto@gmail.com">
+            Email
+          </a>
+
+          <a
+            href="https://whatsapp.com/channel/0029Vb7amWN89ingvwgz6V0T"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p>
+          &copy; 2026 DEEPBYTO. All rights reserved.
+        </p>
+
+        <div class="footer-socials">
+
+          <a
+            href="https://github.com/DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://x.com/deepbyto"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X"
+          >
+            X
+          </a>
+
+          <a
+            href="https://youtube.com/@DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube"
+          >
+            YouTube
+          </a>
+
+          <a
+            href="https://discord.gg/HWhBYHjApe"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Discord"
+          >
+            Discord
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+    // ===== THEME TOGGLE =====
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('deepbyto-theme', theme);
+
+      if (theme === 'light') {
+        themeIcon.className = 'fas fa-sun';
+        themeLabel.textContent = 'Light';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeLabel.textContent = 'Dark';
+      }
+
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.content = theme === 'light' ? '#f5f5f5' : '#000000';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      setTheme(next);
+    }
+
+    const savedTheme = localStorage.getItem('deepbyto-theme') || 'dark';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // ===== NAVBAR =====
+    const navbar = document.getElementById('navbar');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('active');
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.focus();
+      }
+    });
+
+    // ===== WORD COUNTER LOGIC =====
+
+    // Common English stop words to filter out from keyword density
+    const STOP_WORDS = new Set([
+      'the','a','an','and','or','but','if','then','else','when','at','from','by',
+      'on','off','for','in','out','over','under','again','further','once','here',
+      'there','all','any','both','each','few','more','most','other','some','such',
+      'no','nor','not','only','own','same','so','than','too','very','can','will',
+      'just','should','now','is','am','are','was','were','be','been','being','have',
+      'has','had','do','does','did','to','of','with','as','it','its','this','that',
+      'these','those','i','you','he','she','we','they','me','him','her','us','them',
+      'my','your','his','our','their','what','which','who','whom','whose','about',
+      'into','through','during','before','after','above','below','between','up',
+      'down','because','while','where','how','why','also','would','could','should',
+      'may','might','must','shall','get','got','go','goes','going','went','come',
+      'came','make','made','take','took','see','saw','know','knew','think','thought'
+    ]);
+
+    let currentText = '';
+
+    function analyzeText() {
+      const text = document.getElementById('textInput').value;
+      currentText = text;
+
+      // ===== BASIC COUNTS =====
+      // Words: split by whitespace, filter empty
+      const words = text.trim() ? text.trim().split(/\s+/).filter(w => w.length > 0) : [];
+      const wordCount = words.length;
+
+      // Characters
+      const charCount = text.length;
+      const charNoSpaces = text.replace(/\s/g, '').length;
+
+      // Sentences: split by . ! ? and filter empties
+      const sentences = text
+        .split(/[.!?]+/)
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+      const sentenceCount = sentences.length;
+
+      // Paragraphs: split by double newlines or single newline blocks
+      const paragraphs = text
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(p => p.length > 0);
+      const paragraphCount = text.trim() === '' ? 0 : Math.max(paragraphs.length, 1);
+
+      // ===== UPDATE STATS =====
+      document.getElementById('statWords').textContent = wordCount.toLocaleString();
+      document.getElementById('statChars').textContent = charCount.toLocaleString();
+      document.getElementById('statSentences').textContent = sentenceCount.toLocaleString();
+      document.getElementById('statParagraphs').textContent = paragraphCount.toLocaleString();
+
+      // ===== TIME ESTIMATES =====
+      // Reading: 200 wpm, Speaking: 130 wpm
+      const readingSeconds = Math.round((wordCount / 200) * 60);
+      const speakingSeconds = Math.round((wordCount / 130) * 60);
+
+      document.getElementById('readingTime').textContent = formatTime(readingSeconds);
+      document.getElementById('speakingTime').textContent = formatTime(speakingSeconds);
+
+      // ===== KEYWORD DENSITY =====
+      updateKeywords(words, wordCount);
+
+      // ===== SOCIAL LIMITS =====
+      updateSocialLimits(charCount);
+    }
+
+    function formatTime(seconds) {
+      if (seconds === 0) return '0s';
+      if (seconds < 60) return seconds + 's';
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      if (mins < 60) {
+        return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
+      }
+      const hours = Math.floor(mins / 60);
+      const remMins = mins % 60;
+      return remMins > 0 ? `${hours}h ${remMins}m` : `${hours}h`;
+    }
+
+    function updateKeywords(words, totalWords) {
+      const list = document.getElementById('keywordList');
+
+      if (totalWords === 0) {
+        list.innerHTML = '<div class="empty-keywords">Start typing to see top keywords</div>';
+        return;
+      }
+
+      // Count word frequencies (lowercased, strip punctuation, filter stop words & short)
+      const freq = {};
+      words.forEach(w => {
+        const clean = w
+          .toLowerCase()
+          .replace(/[^a-z0-9\u00C0-\u024F\u0600-\u06FF'-]/gi, '')
+          .replace(/^['-]+|['-]+$/g, '');
+
+        if (clean.length < 2) return; // skip 1-char words
+        if (STOP_WORDS.has(clean)) return; // skip stop words
+        if (/^\d+$/.test(clean)) return; // skip pure numbers
+
+        freq[clean] = (freq[clean] || 0) + 1;
+      });
+
+      // Sort by frequency
+      const sorted = Object.entries(freq)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      if (sorted.length === 0) {
+        list.innerHTML = '<div class="empty-keywords">No significant keywords found</div>';
+        return;
+      }
+
+      list.innerHTML = '';
+      sorted.forEach(([word, count]) => {
+        const percent = ((count / totalWords) * 100).toFixed(1);
+        const item = document.createElement('div');
+        item.className = 'keyword-item';
+        item.innerHTML = `
+          <span class="kw-word" title="${escapeHtml(word)}">${escapeHtml(word)}</span>
+          <span class="kw-count">${count}</span>
+          <span class="kw-percent">${percent}%</span>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function updateSocialLimits(charCount) {
+      const limits = [
+        { id: 'limitTwitter', max: 280, label: 'Twitter / X' },
+        { id: 'limitInstagram', max: 2200, label: 'Instagram' },
+        { id: 'limitFacebook', max: 63206, label: 'Facebook' },
+        { id: 'limitLinkedin', max: 3000, label: 'LinkedIn' }
+      ];
+
+      limits.forEach(lim => {
+        const el = document.getElementById(lim.id);
+        if (!el) return;
+
+        el.textContent = `${charCount.toLocaleString()} / ${lim.max.toLocaleString()}`;
+
+        if (charCount > lim.max) {
+          el.classList.remove('ok');
+          el.classList.add('over');
+        } else {
+          el.classList.remove('over');
+          el.classList.add('ok');
+        }
+      });
+    }
+
+    // ===== ACTIONS =====
+    function copyText() {
+      const status = document.getElementById('status');
+      const text = document.getElementById('textInput').value;
+
+      if (!text) {
+        status.textContent = 'Nothing to copy. Type some text first.';
+        status.classList.remove('success');
+        return;
+      }
+
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          status.textContent = 'Text copied to clipboard!';
+          status.classList.add('success');
+          setTimeout(() => { status.textContent = ''; }, 2500);
+        })
+        .catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+            status.textContent = 'Text copied to clipboard!';
+            status.classList.add('success');
+            setTimeout(() => { status.textContent = ''; }, 2500);
+          } catch {
+            status.textContent = 'Could not copy. Please select and copy manually.';
+            status.classList.remove('success');
+          }
+          document.body.removeChild(ta);
+        });
+    }
+
+    function downloadText() {
+      const status = document.getElementById('status');
+      const text = document.getElementById('textInput').value;
+
+      if (!text) {
+        status.textContent = 'Nothing to download. Type some text first.';
+        status.classList.remove('success');
+        return;
+      }
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'deepbyto-text-' + Date.now() + '.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      status.textContent = 'Text file downloaded!';
+      status.classList.add('success');
+      setTimeout(() => { status.textContent = ''; }, 2500);
+    }
+
+    function clearText() {
+      const status = document.getElementById('status');
+      document.getElementById('textInput').value = '';
+      analyzeText();
+      status.textContent = 'Text cleared.';
+      status.classList.remove('success');
+      setTimeout(() => { status.textContent = ''; }, 2000);
+      document.getElementById('textInput').focus();
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ===== INITIAL ANALYZE =====
+    window.addEventListener('load', () => {
+      analyzeText();
+    });
+  </script>
+
+</body>
+</html>
