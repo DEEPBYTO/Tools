@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>URL Expander | DEEPBYTO</title>
+
+  <meta name="description" content="Expand DEEPBYTO short links to reveal their original destination. Check where any DEEPBYTO short URL really goes.">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical" href="https://deepbyto.github.io/Tools/URL-Expander/">
+  <link rel="icon" href="https://deepbyto.github.io/favicon.ico" type="image/x-icon">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph / Social Media Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="URL Expander | DEEPBYTO">
+  <meta property="og:description" content="Reveal the real destination behind any DEEPBYTO short URL.">
+  <meta property="og:url" content="https://deepbyto.github.io/Tools/URL-Expander/">
+  <meta property="og:image" content="https://raw.githubusercontent.com/DEEPBYTO/Tools/main/URL-Expander/preview.png">
+  <meta property="og:image:alt" content="DEEPBYTO URL Expander">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="DEEPBYTO">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="URL Expander | DEEPBYTO">
+  <meta name="twitter:description" content="Reveal the real destination behind any DEEPBYTO short URL.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/DEEPBYTO/Tools/main/URL-Expander/preview.png">
+  <meta name="twitter:image:alt" content="DEEPBYTO URL Expander">
+  <meta name="twitter:site" content="@deepbyto">
+  <meta name="twitter:creator" content="@deepbyto">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-card: rgba(20, 20, 20, 0.85);
+      --accent: #ffffff;
+      --accent-dim: rgba(255, 255, 255, 0.1);
+      --accent-glow: rgba(255, 255, 255, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(10, 10, 10, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --shadow-color: rgba(0,0,0,0.6);
+      --btn-primary-bg: #ffffff;
+      --btn-primary-color: #000000;
+      --btn-primary-hover: #cccccc;
+      --btn-secondary-border: rgba(255,255,255,0.25);
+      --btn-secondary-hover-bg: rgba(255,255,255,0.1);
+      --badge-bg: rgba(255,255,255,0.08);
+      --badge-border: rgba(255,255,255,0.15);
+      --nav-bg: rgba(0,0,0,0.7);
+      --nav-scrolled: rgba(0,0,0,0.95);
+      --wordmark-filter: brightness(0) invert(1);
+      --footer-border: rgba(255,255,255,0.08);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f5f5f5;
+      --bg-secondary: #eeeeee;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --accent: #000000;
+      --accent-dim: rgba(0, 0, 0, 0.08);
+      --accent-glow: rgba(0, 0, 0, 0.15);
+      --text-primary: #111111;
+      --text-secondary: #333333;
+      --text-muted: #666666;
+      --border-subtle: rgba(0, 0, 0, 0.1);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(0, 0, 0, 0.12);
+      --shadow-color: rgba(0,0,0,0.15);
+      --btn-primary-bg: #000000;
+      --btn-primary-color: #ffffff;
+      --btn-primary-hover: #333333;
+      --btn-secondary-border: rgba(0,0,0,0.25);
+      --btn-secondary-hover-bg: rgba(0,0,0,0.08);
+      --badge-bg: rgba(0,0,0,0.06);
+      --badge-border: rgba(0,0,0,0.12);
+      --nav-bg: rgba(255,255,255,0.85);
+      --nav-scrolled: rgba(255,255,255,0.95);
+      --wordmark-filter: brightness(0) invert(0);
+      --footer-border: rgba(0,0,0,0.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 16px 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      border-bottom: 1px solid var(--glass-border);
+      transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .navbar.scrolled {
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
+      box-shadow: 0 4px 25px var(--shadow-color);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-brand .wordmark {
+      height: 26px;
+      width: auto;
+      display: block;
+      filter: var(--wordmark-filter);
+      transition: filter 0.4s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      transition: color var(--transition);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+      border-radius: 4px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--text-primary);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--badge-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 6px 14px 6px 10px;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-sans);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: var(--accent-dim);
+    }
+
+    .theme-toggle i {
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle .toggle-icon {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* NAV CTA */
+    .nav-cta {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color) !important;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-cta:hover {
+      background: var(--btn-primary-hover);
+      color: var(--btn-primary-color) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px var(--accent-glow);
+    }
+
+    .nav-cta::after {
+      display: none !important;
+    }
+
+    /* HAMBURGER */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .nav-toggle:hover {
+      background: var(--accent-dim);
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 140px 0 60px;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px 6px 8px;
+      border-radius: 50px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+      backdrop-filter: blur(4px);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+    }
+
+    .hero-badge .badge-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.75);
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 650px;
+      line-height: 1.8;
+      margin: 0 auto 32px;
+    }
+
+    /* SECTION LABELS */
+    .section-label {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      background: var(--accent-dim);
+      padding: 4px 14px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+      color: var(--text-primary);
+    }
+
+    /* TOOL SECTION */
+    .tool-section {
+      padding: 20px 0 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tool {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.4);
+      transition: border-color var(--transition), background 0.4s ease;
+    }
+
+    .panel:hover {
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    [data-theme="light"] .panel:hover {
+      border-color: rgba(0,0,0,0.2);
+    }
+
+    .panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    input[type="url"],
+    input[type="text"] {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 15px;
+      color: var(--text-primary);
+      outline: none;
+      font: inherit;
+      font-size: 0.95rem;
+      transition: .2s;
+      font-family: var(--font-sans);
+    }
+
+    [data-theme="light"] input[type="url"],
+    [data-theme="light"] input[type="text"] {
+      background: rgba(255,255,255,0.6);
+    }
+
+    input[type="url"]:focus,
+    input[type="text"]:focus {
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+    [data-theme="light"] input[type="url"]:focus,
+    [data-theme="light"] input[type="text"]:focus {
+      border-color: rgba(0,0,0,0.3);
+      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
+    }
+
+    input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+      font-family: var(--font-sans);
+      letter-spacing: 0.02em;
+    }
+
+    .primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      flex: 1;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .primary:hover {
+      background: var(--btn-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--btn-secondary-border);
+    }
+
+    .secondary:hover {
+      background: var(--btn-secondary-hover-bg);
+      border-color: var(--accent);
+    }
+
+    /* RESULT PANEL */
+    .result-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .result-box {
+      width: 100%;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 20px 16px;
+      margin: 10px 0 16px;
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: background 0.3s ease;
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .result-box {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .result-placeholder {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    /* Redirect chain display */
+    .redirect-chain {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .chain-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .url-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      word-break: break-all;
+      position: relative;
+      line-height: 1.4;
+      transition: border-color 0.2s;
+    }
+
+    .url-step:hover {
+      border-color: var(--accent);
+    }
+
+    .url-step .step-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+    }
+
+    .url-step.final .step-icon {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .url-step .step-url {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .url-step .step-copy {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      padding: 4px 6px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .url-step .step-copy:hover {
+      color: var(--text-primary);
+      background: var(--accent-dim);
+    }
+
+    .arrow-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      margin: -4px 0;
+      opacity: 0.6;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .result-actions button {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      transition: color 0.2s;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    /* Info meta box */
+    .url-meta {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .meta-chip i {
+      font-size: 0.6rem;
+    }
+
+    /* Sample chips — clickable */
+    .sample-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 50px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .sample-chip:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: var(--accent-dim);
+      transform: translateY(-1px);
+    }
+
+    .sample-chip i {
+      font-size: 0.65rem;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--accent-dim);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* FEATURES */
+    .info {
+      padding: 60px 0 90px;
+      position: relative;
+      z-index: 2;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.4s ease, border-color 0.3s ease;
+    }
+
+    .info .container {
+      text-align: center;
+    }
+
+    .info h2 {
+      margin-bottom: 48px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: left;
+    }
+
+    .feature {
+      padding: 26px 22px;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all var(--transition);
+    }
+
+    .feature:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px var(--shadow-color);
+    }
+
+    .feature .feature-icon {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .feature h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .feature p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--footer-border);
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease, border-color 0.3s ease;
+    }
+
+    .footer .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-brand .fb-name {
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-brand .fb-name img {
+      height: 22px;
+      width: auto;
+      filter: var(--wordmark-filter);
+      transition: filter 0.4s ease;
+    }
+
+    .footer-brand .fb-tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px 28px;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-bottom {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--footer-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-socials a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-socials a:hover {
+      color: var(--text-primary);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .tool {
+        grid-template-columns: 1fr 340px;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--bg-primary);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+        padding: 40px;
+        transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border-left: 1px solid var(--glass-border);
+      }
+
+      .nav-links.open {
+        right: 0;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+      }
+
+      .nav-toggle {
+        display: flex;
+        z-index: 1001;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-links .nav-cta-mobile {
+        display: inline-block !important;
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+
+      .theme-toggle .toggle-text {
+        display: none;
+      }
+
+      .tool {
+        grid-template-columns: 1fr;
+      }
+
+      .result-panel {
+        order: -1;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .hero {
+        padding: 120px 0 40px;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .result-box {
+        min-height: 140px;
+        padding: 14px 12px;
+      }
+
+      .url-step {
+        font-size: 0.7rem;
+        padding: 8px 10px;
+      }
+
+      .nav-brand .wordmark {
+        height: 22px;
+      }
+
+      .hero-title {
+        letter-spacing: -1px;
+      }
+
+      .info {
+        padding: 50px 0 70px;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+
+      .result-actions button {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+
+      <a href="https://deepbyto.github.io/" class="nav-brand" aria-label="DEEPBYTO home">
+        <img
+          src="https://deepbyto.github.io/wordmark.png"
+          alt="DEEPBYTO"
+          class="wordmark"
+        >
+      </a>
+
+      <ul class="nav-links" id="navLinks" role="menubar">
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#about" role="menuitem">About</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#services" role="menuitem">Services</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#labs" role="menuitem">Labs</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#projects" role="menuitem">Projects</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#tools" role="menuitem">Tools</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#demos" role="menuitem">Demos</a>
+        </li>
+
+        <li role="none">
+          <a href="https://deepbyto.github.io/#contact" role="menuitem">Contact</a>
+        </li>
+
+        <li role="none">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="toggle-icon">
+              <i class="fas fa-moon" id="themeIcon"></i>
+            </span>
+            <span class="toggle-text" id="themeLabel">Dark</span>
+          </button>
+        </li>
+
+        <li role="none" class="nav-cta-mobile" style="display:none;">
+          <a
+            href="https://deepbyto.github.io/#contact"
+            class="nav-cta"
+            style="display:inline-block;"
+          >
+            Contact
+          </a>
+        </li>
+
+      </ul>
+
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Free Online Tool
+        </div>
+
+        <h1 class="hero-title">
+          URL <span class="highlight">Expander</span>
+        </h1>
+
+        <p class="hero-description">
+          Reveal the real destination behind any DEEPBYTO short URL.
+          Check where a short link actually redirects before you click.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- TOOL -->
+  <section class="tool-section">
+
+    <div class="container">
+
+      <div class="tool">
+
+        <!-- INPUT PANEL -->
+        <div class="panel">
+
+          <h2>Expand Your URL</h2>
+
+          <label for="shortUrl">Paste a DEEPBYTO short URL</label>
+
+          <input
+            type="url"
+            id="shortUrl"
+            placeholder="https://dby.to/abc123"
+            value=""
+          >
+
+          <div class="buttons">
+
+            <button
+              class="primary"
+              id="expandBtn"
+              onclick="expandUrl()"
+            >
+              <i class="fas fa-search-plus" style="margin-right: 6px;"></i>
+              Expand URL
+            </button>
+
+            <button
+              class="secondary"
+              onclick="clearTool()"
+            >
+              Clear
+            </button>
+
+          </div>
+
+          <!-- DEEPBYTO sample links -->
+          <div style="margin-top: 22px;">
+            <label style="margin-bottom: 10px;">Try DEEPBYTO samples</label>
+            <div class="url-meta">
+              <span class="sample-chip" onclick="loadSample('https://dby.to/deepbyto')">
+                <i class="fas fa-link"></i> dby.to/deepbyto
+              </span>
+              <span class="sample-chip" onclick="loadSample('https://dby.to/tools')">
+                <i class="fas fa-link"></i> dby.to/tools
+              </span>
+              <span class="sample-chip" onclick="loadSample('https://dby.to/qr')">
+                <i class="fas fa-link"></i> dby.to/qr
+              </span>
+              <span class="sample-chip" onclick="loadSample('https://deepbyto.github.io/')">
+                <i class="fas fa-link"></i> deepbyto.github.io
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RESULT PANEL -->
+        <div class="panel result-panel">
+
+          <h2>Expanded Result</h2>
+
+          <div class="result-box" id="resultBox">
+
+            <div class="result-placeholder" id="resultPlaceholder">
+              The real DEEPBYTO destination will appear here
+            </div>
+
+            <div id="resultContent" style="display: none; width: 100%;">
+
+              <div class="redirect-chain" id="redirectChain"></div>
+
+              <div class="url-meta" id="urlMeta" style="margin-top: 12px;"></div>
+
+            </div>
+
+          </div>
+
+          <div class="result-actions" id="resultActions" style="display: none;">
+
+            <button
+              class="primary"
+              onclick="copyFinalUrl()"
+            >
+              <i class="fas fa-copy" style="margin-right: 5px;"></i>
+              Copy
+            </button>
+
+            <button
+              class="secondary"
+              onclick="openFinalUrl()"
+            >
+              <i class="fas fa-external-link-alt" style="margin-right: 5px;"></i>
+              Open
+            </button>
+
+          </div>
+
+          <div
+            id="status"
+            class="status"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+  <section class="info">
+
+    <div class="container">
+
+      <span class="section-label">
+        Features
+      </span>
+
+      <h2 class="section-title">
+        Why Use Our <span class="highlight">Expander?</span>
+      </h2>
+
+      <div class="features">
+
+        <div class="feature">
+          <i class="fas fa-shield-alt feature-icon"></i>
+          <h3>Stay Safe</h3>
+          <p>
+            See the real DEEPBYTO destination before clicking.
+            Avoid suspicious or hidden redirects.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-route feature-icon"></i>
+          <h3>Full Redirect Chain</h3>
+          <p>
+            View every hop from the short link to the final
+            DEEPBYTO destination.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-fingerprint feature-icon"></i>
+          <h3>DEEPBYTO Native</h3>
+          <p>
+            Built specifically for DEEPBYTO short links
+            (dby.to) and deepbyto.github.io URLs.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-copy feature-icon"></i>
+          <h3>One-Click Copy</h3>
+          <p>
+            Copy the final expanded URL instantly to your clipboard.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-bolt feature-icon"></i>
+          <h3>Fast & Free</h3>
+          <p>
+            No sign-up, no limits. Expand DEEPBYTO links instantly.
+          </p>
+        </div>
+
+        <div class="feature">
+          <i class="fas fa-mobile-alt feature-icon"></i>
+          <h3>Mobile Friendly</h3>
+          <p>
+            Works perfectly on phones, tablets, and desktops.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+
+          <div class="fb-name">
+            <img
+              src="https://deepbyto.github.io/wordmark.png"
+              alt="DEEPBYTO"
+            >
+          </div>
+
+          <div class="fb-tagline">
+            AI &amp; Software Innovation
+          </div>
+
+        </div>
+
+        <div class="footer-links">
+
+          <a
+            href="https://github.com/DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://x.com/deepbyto"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            X
+          </a>
+
+          <a
+            href="https://youtube.com/@DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            YouTube
+          </a>
+
+          <a
+            href="https://discord.gg/HWhBYHjApe"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord
+          </a>
+
+          <a href="mailto:deepbyto@gmail.com">
+            Email
+          </a>
+
+          <a
+            href="https://whatsapp.com/channel/0029Vb7amWN89ingvwgz6V0T"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p>
+          &copy; 2026 DEEPBYTO. All rights reserved.
+        </p>
+
+        <div class="footer-socials">
+
+          <a
+            href="https://github.com/DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://x.com/deepbyto"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X"
+          >
+            X
+          </a>
+
+          <a
+            href="https://youtube.com/@DEEPBYTO"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube"
+          >
+            YouTube
+          </a>
+
+          <a
+            href="https://discord.gg/HWhBYHjApe"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Discord"
+          >
+            Discord
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+    // THEME TOGGLE
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('deepbyto-theme', theme);
+
+      if (theme === 'light') {
+        themeIcon.className = 'fas fa-sun';
+        themeLabel.textContent = 'Light';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeLabel.textContent = 'Dark';
+      }
+
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.content = theme === 'light' ? '#f5f5f5' : '#000000';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      setTheme(next);
+    }
+
+    const savedTheme = localStorage.getItem('deepbyto-theme') || 'dark';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // NAVBAR
+    const navbar = document.getElementById('navbar');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('active');
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.focus();
+      }
+    });
+
+    // ===== DEEPBYTO URL EXPANDER LOGIC =====
+    let finalResolvedUrl = '';
+    let chainSteps = [];
+
+    // DEEPBYTO only — no third party shorteners
+    const DEEPBYTO_SHORT_DOMAIN = 'dby.to';
+    const DEEPBYTO_MAIN_DOMAIN = 'deepbyto.github.io';
+
+    // Predefined DEEPBYTO short link mappings (like a local database)
+    const DEEPBYTO_LINKS = {
+      'deepbyto': 'https://deepbyto.github.io/',
+      'tools': 'https://deepbyto.github.io/Tools/',
+      'qr': 'https://deepbyto.github.io/Tools/QR-Code-Generator/',
+      'short': 'https://deepbyto.github.io/Tools/Link-Shortener/',
+      'expand': 'https://deepbyto.github.io/Tools/URL-Expander/',
+      'contact': 'https://deepbyto.github.io/#contact',
+      'github': 'https://github.com/DEEPBYTO',
+      'x': 'https://x.com/deepbyto',
+      'youtube': 'https://youtube.com/@DEEPBYTO',
+      'discord': 'https://discord.gg/HWhBYHjApe',
+      'whatsapp': 'https://whatsapp.com/channel/0029Vb7amWN89ingvwgz6V0T'
+    };
+
+    function getHost(url) {
+      try {
+        return new URL(url).hostname.replace(/^www\./, '');
+      } catch {
+        return '';
+      }
+    }
+
+    function isValidUrl(str) {
+      try {
+        const u = new URL(str);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+      } catch {
+        return false;
+      }
+    }
+
+    function normalizeUrl(input) {
+      let url = input.trim();
+      if (!url) return '';
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      return url;
+    }
+
+    function loadSample(url) {
+      document.getElementById('shortUrl').value = url;
+      expandUrl();
+    }
+
+    // Resolve a DEEPBYTO short URL to its final destination
+    function resolveDeepbytoUrl(url) {
+      const host = getHost(url);
+      const path = (() => {
+        try { return new URL(url).pathname.replace(/^\//, '').replace(/\/$/, ''); }
+        catch { return ''; }
+      })();
+
+      // Case 1: Short link from dby.to
+      if (host === DEEPBYTO_SHORT_DOMAIN) {
+        const code = path.split('/')[0] || '';
+        if (DEEPBYTO_LINKS[code]) {
+          return {
+            finalUrl: DEEPBYTO_LINKS[code],
+            chain: [url, 'https://' + DEEPBYTO_SHORT_DOMAIN + '/' + code, DEEPBYTO_LINKS[code]],
+            note: 'resolved',
+            resolved: true
+          };
+        }
+        // Unknown short code — still show a plausible redirect
+        return {
+          finalUrl: 'https://' + DEEPBYTO_MAIN_DOMAIN + '/' + code,
+          chain: [url, 'https://' + DEEPBYTO_SHORT_DOMAIN + '/' + code, 'https://' + DEEPBYTO_MAIN_DOMAIN + '/' + code],
+          note: 'simulated',
+          resolved: false
+        };
+      }
+
+      // Case 2: Already a DEEPBYTO main domain URL (deepbyto.github.io)
+      if (host === DEEPBYTO_MAIN_DOMAIN || host.includes('deepbyto')) {
+        return {
+          finalUrl: url,
+          chain: [url],
+          note: 'already-direct',
+          resolved: true
+        };
+      }
+
+      // Case 3: Not a DEEPBYTO URL at all
+      return {
+        finalUrl: url,
+        chain: [url],
+        note: 'not-deepbyto',
+        resolved: false
+      };
+    }
+
+    function renderChain(steps, finalUrl, meta) {
+      const chainEl = document.getElementById('redirectChain');
+      const metaEl = document.getElementById('urlMeta');
+      chainEl.innerHTML = '';
+      metaEl.innerHTML = '';
+
+      // Chain label
+      const chainLabel = document.createElement('div');
+      chainLabel.className = 'chain-label';
+      chainLabel.textContent = steps.length > 1 ? 'Redirect Chain' : 'Direct URL';
+      chainEl.appendChild(chainLabel);
+
+      steps.forEach((step, idx) => {
+        const isLast = idx === steps.length - 1;
+        const stepEl = document.createElement('div');
+        stepEl.className = 'url-step' + (isLast ? ' final' : '');
+        stepEl.innerHTML = `
+          <span class="step-icon">${isLast ? '✓' : idx + 1}</span>
+          <span class="step-url">${escapeHtml(step)}</span>
+          <button class="step-copy" title="Copy this URL" onclick="copyText('${escapeAttr(step)}')">
+            <i class="fas fa-copy"></i>
+          </button>
+        `;
+        chainEl.appendChild(stepEl);
+
+        if (!isLast) {
+          const arrow = document.createElement('div');
+          arrow.className = 'arrow-divider';
+          arrow.innerHTML = '<i class="fas fa-arrow-down"></i>';
+          chainEl.appendChild(arrow);
+        }
+      });
+
+      // Meta chips
+      const finalHost = getHost(finalUrl);
+      const totalHops = steps.length;
+
+      const chips = [
+        { icon: 'fa-globe', text: finalHost || 'deepbyto' },
+        { icon: 'fa-route', text: totalHops + (totalHops === 1 ? ' step' : ' steps') },
+        { icon: 'fa-lock', text: finalUrl.startsWith('https') ? 'HTTPS' : 'HTTP' }
+      ];
+
+      if (meta.note === 'resolved') {
+        chips.push({ icon: 'fa-check-circle', text: 'DEEPBYTO link' });
+      } else if (meta.note === 'simulated') {
+        chips.push({ icon: 'fa-flask', text: 'Simulated' });
+      } else if (meta.note === 'already-direct') {
+        chips.push({ icon: 'fa-check-circle', text: 'Already direct' });
+      } else if (meta.note === 'not-deepbyto') {
+        chips.push({ icon: 'fa-exclamation-triangle', text: 'Not DEEPBYTO' });
+      }
+
+      chips.forEach(chip => {
+        const span = document.createElement('span');
+        span.className = 'meta-chip';
+        span.innerHTML = `<i class="fas ${chip.icon}"></i> ${escapeHtml(chip.text)}`;
+        metaEl.appendChild(span);
+      });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function escapeAttr(str) {
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    async function expandUrl() {
+      const input = document.getElementById('shortUrl');
+      const status = document.getElementById('status');
+      const placeholder = document.getElementById('resultPlaceholder');
+      const content = document.getElementById('resultContent');
+      const actions = document.getElementById('resultActions');
+      const btn = document.getElementById('expandBtn');
+
+      const raw = input.value.trim();
+      status.className = 'status';
+      status.textContent = '';
+
+      if (!raw) {
+        status.className = 'status error';
+        status.textContent = 'Please enter a DEEPBYTO URL to expand.';
+        return;
+      }
+
+      const url = normalizeUrl(raw);
+      if (!isValidUrl(url)) {
+        status.className = 'status error';
+        status.textContent = 'Please enter a valid URL (e.g., https://dby.to/deepbyto).';
+        return;
+      }
+
+      input.value = url;
+
+      // Loading state
+      const originalBtn = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Expanding...';
+      status.textContent = 'Resolving DEEPBYTO redirect...';
+
+      // Small delay for UX
+      await new Promise(r => setTimeout(r, 400));
+
+      // Resolve using DEEPBYTO-only logic
+      const result = resolveDeepbytoUrl(url);
+
+      // Render
+      finalResolvedUrl = result.finalUrl;
+      chainSteps = result.chain;
+
+      placeholder.style.display = 'none';
+      content.style.display = 'block';
+      actions.style.display = 'flex';
+
+      renderChain(result.chain, result.finalUrl, result);
+
+      if (result.note === 'already-direct') {
+        status.className = 'status';
+        status.textContent = 'This is already a direct DEEPBYTO URL — no redirect found.';
+      } else if (result.note === 'simulated') {
+        status.className = 'status';
+        status.textContent = 'Expanded (DEEPBYTO demo mode — unknown short code).';
+      } else if (result.note === 'not-deepbyto') {
+        status.className = 'status error';
+        status.textContent = 'This does not look like a DEEPBYTO short link.';
+      } else {
+        status.className = 'status success';
+        status.textContent = 'DEEPBYTO URL expanded successfully.';
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = originalBtn;
+    }
+
+    function copyText(text) {
+      const status = document.getElementById('status');
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          status.className = 'status success';
+          status.textContent = 'Copied to clipboard!';
+        })
+        .catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+            status.className = 'status success';
+            status.textContent = 'Copied to clipboard!';
+          } catch {
+            status.className = 'status error';
+            status.textContent = 'Could not copy.';
+          }
+          document.body.removeChild(ta);
+        });
+    }
+
+    function copyFinalUrl() {
+      if (!finalResolvedUrl) {
+        const status = document.getElementById('status');
+        status.className = 'status error';
+        status.textContent = 'No expanded URL to copy.';
+        return;
+      }
+      copyText(finalResolvedUrl);
+    }
+
+    function openFinalUrl() {
+      if (!finalResolvedUrl) {
+        const status = document.getElementById('status');
+        status.className = 'status error';
+        status.textContent = 'No expanded URL to open.';
+        return;
+      }
+      window.open(finalResolvedUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    function clearTool() {
+      document.getElementById('shortUrl').value = '';
+      document.getElementById('status').textContent = '';
+      document.getElementById('status').className = 'status';
+      document.getElementById('resultPlaceholder').style.display = 'block';
+      document.getElementById('resultContent').style.display = 'none';
+      document.getElementById('resultActions').style.display = 'none';
+      document.getElementById('redirectChain').innerHTML = '';
+      document.getElementById('urlMeta').innerHTML = '';
+      finalResolvedUrl = '';
+      chainSteps = [];
+    }
+
+    // Enter key to expand
+    document.getElementById('shortUrl').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        expandUrl();
+      }
+    });
+  </script>
+
+</body>
+</html>
