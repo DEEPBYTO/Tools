@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools — DEEPBYTO</title>
+  <meta name="description" content="Free tools by DEEPBYTO. Fast, privacy-friendly, and built for everyday tasks." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://deepbyto.github.io/Tools/" />
+  <link rel="icon" href="https://deepbyto.github.io/favicon.ico" type="image/x-icon" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-card: rgba(20, 20, 20, 0.85);
+      --accent: #ffffff;
+      --accent-dim: rgba(255, 255, 255, 0.1);
+      --accent-glow: rgba(255, 255, 255, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --shadow-color: rgba(0,0,0,0.6);
+      --btn-primary-bg: #ffffff;
+      --btn-primary-color: #000000;
+      --btn-primary-hover: #cccccc;
+      --badge-bg: rgba(255,255,255,0.08);
+      --badge-border: rgba(255,255,255,0.15);
+      --nav-bg: rgba(0,0,0,0.7);
+      --nav-scrolled: rgba(0,0,0,0.95);
+      --tool-card-bg: var(--bg-card);
+      --modal-backdrop: rgba(0, 0, 0, 0.75);
+    }
+    [data-theme="light"] {
+      --bg-primary: #f5f5f5;
+      --bg-secondary: #eeeeee;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --accent: #000000;
+      --accent-dim: rgba(0, 0, 0, 0.08);
+      --accent-glow: rgba(0, 0, 0, 0.15);
+      --text-primary: #111111;
+      --text-secondary: #333333;
+      --text-muted: #666666;
+      --border-subtle: rgba(0, 0, 0, 0.1);
+      --glass-border: rgba(0, 0, 0, 0.12);
+      --shadow-color: rgba(0,0,0,0.15);
+      --btn-primary-bg: #000000;
+      --btn-primary-color: #ffffff;
+      --btn-primary-hover: #333333;
+      --badge-bg: rgba(0,0,0,0.06);
+      --badge-border: rgba(0,0,0,0.12);
+      --nav-bg: rgba(255,255,255,0.85);
+      --nav-scrolled: rgba(255,255,255,0.95);
+      --tool-card-bg: rgba(255,255,255,0.85);
+      --modal-backdrop: rgba(0, 0, 0, 0.4);
+    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+    ::selection { background: var(--accent); color: var(--bg-primary); }
+    a { color: var(--text-primary); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: var(--text-secondary); }
+    img { max-width: 100%; display: block; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+    .section-padding { padding: 100px 0 80px; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 12px; }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 16px 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      border-bottom: 1px solid var(--glass-border);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .navbar.scrolled {
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
+      box-shadow: 0 4px 25px var(--shadow-color);
+    }
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.25rem;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width var(--transition); border-radius: 4px;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--text-primary); }
+    .nav-links a.active::after { width: 100%; }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px;
+      border-radius: 6px;
+    }
+    .nav-toggle span {
+      display: block; width: 26px; height: 2px;
+      background: var(--text-primary); border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--badge-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 6px 14px 6px 10px;
+      color: var(--text-secondary);
+      font-size: 0.75rem; font-weight: 500;
+      cursor: pointer; transition: all var(--transition);
+      font-family: var(--font-sans);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: var(--accent-dim);
+    }
+
+    /* HERO */
+    .tools-hero {
+      padding: 160px 0 60px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .tools-hero .section-label {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 500; font-size: 0.7rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-primary); margin-bottom: 12px;
+      background: var(--accent-dim);
+      padding: 4px 14px; border-radius: 50px;
+      border: 1px solid var(--glass-border);
+    }
+    .tools-hero h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .tools-hero p {
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* TOOLS GRID */
+    .tools-section { padding: 60px 0 100px; }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .tool-card {
+      position: relative;
+      background: var(--tool-card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px 26px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex; flex-direction: column;
+      overflow: hidden; min-height: 240px;
+      opacity: 0; transform: translateY(30px);
+      animation: cardFadeIn 0.6s ease forwards;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .tool-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 45px var(--shadow-color), 0 0 50px var(--accent-dim);
+    }
+    .tool-card .tool-icon {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      font-size: 1.4rem; margin-bottom: 18px;
+      transition: all var(--transition);
+    }
+    .tool-card:hover .tool-icon {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+    .tool-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .tool-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 18px; flex: 1;
+    }
+    .tool-card .tool-link {
+      display: inline-flex;
+      align-items: center; gap: 8px;
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--text-primary);
+      transition: gap 0.3s ease;
+    }
+    .tool-card .tool-link .arrow {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      font-size: 0.7rem;
+      transition: all 0.35s ease;
+    }
+    .tool-card:hover .tool-link { gap: 14px; }
+    .tool-card:hover .tool-link .arrow {
+      transform: rotate(-45deg);
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+    }
+    .tool-card.suggest-card {
+      background: var(--accent-dim);
+      border: 1px dashed var(--accent);
+    }
+    .tool-card.suggest-card:hover {
+      background: var(--accent-dim);
+      border-style: solid;
+    }
+    .tool-card.suggest-card .tool-icon {
+      background: transparent;
+      border-style: dashed;
+    }
+    .tool-card.suggest-card:hover .tool-icon {
+      background: var(--accent);
+      border-style: solid;
+    }
+    @keyframes cardFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+    .tools-loading,
+    .tools-empty,
+    .tools-error {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      grid-column: 1 / -1;
+    }
+    .tools-loading i,
+    .tools-empty i,
+    .tools-error i {
+      font-size: 2rem;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 16px;
+    }
+    .tools-error i { color: #ff6b6b; }
+    .tools-error { color: #ff6b6b; }
+
+    /* MODAL */
+    .suggest-modal {
+      position: fixed; inset: 0; z-index: 10000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      background: var(--modal-backdrop);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .suggest-modal.open { opacity: 1; visibility: visible; }
+    .suggest-modal-inner {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 36px 32px 32px;
+      max-width: 540px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      position: relative;
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+    .suggest-modal.open .suggest-modal-inner { transform: translateY(0) scale(1); }
+    .suggest-modal-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--badge-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      font-size: 0.9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+    .suggest-modal-close:hover {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+      transform: rotate(90deg);
+    }
+    .suggest-modal-icon {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: var(--accent-dim);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      font-size: 1.6rem; margin-bottom: 20px;
+    }
+    .suggest-modal h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .suggest-modal .suggest-intro {
+      color: var(--text-secondary);
+      font-size: 0.95rem; line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .suggest-modal .suggest-options {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .suggest-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      transition: all var(--transition);
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .suggest-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      transform: translateX(4px);
+      color: var(--text-primary);
+    }
+    .suggest-option .suggest-option-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--text-primary);
+      font-size: 1.1rem; flex-shrink: 0;
+      transition: all var(--transition);
+    }
+    .suggest-option:hover .suggest-option-icon {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+    }
+    .suggest-option .suggest-option-text { flex: 1; min-width: 0; }
+    .suggest-option .suggest-option-title {
+      font-weight: 600; font-size: 0.9rem;
+      color: var(--text-primary); margin-bottom: 2px;
+    }
+    .suggest-option .suggest-option-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .suggest-option .suggest-option-arrow {
+      font-size: 0.75rem; color: var(--text-muted);
+      transition: transform var(--transition);
+    }
+    .suggest-option:hover .suggest-option-arrow {
+      transform: translateX(4px);
+      color: var(--text-primary);
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-primary);
+      transition: background 0.4s ease;
+    }
+    .footer-grid {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center; gap: 24px;
+    }
+    .footer-brand .fb-name {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.2rem;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+    }
+    .footer-brand .fb-tagline {
+      font-size: 0.8rem; color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .footer-links {
+      display: flex; flex-wrap: wrap;
+      gap: 18px 28px;
+    }
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-bottom {
+      margin-top: 32px; padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center; gap: 12px;
+    }
+    .footer-bottom p {
+      font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed; top: 0; right: -100%;
+        width: 280px; height: 100vh;
+        background: var(--bg-primary);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        flex-direction: column;
+        justify-content: center; align-items: center;
+        gap: 28px; padding: 40px;
+        transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border-left: 1px solid var(--glass-border);
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 1.1rem; }
+      .nav-toggle { display: flex; z-index: 1001; }
+      .theme-toggle .toggle-text { display: none; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .footer-grid { flex-direction: column; text-align: center; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .tools-hero { padding: 130px 0 40px; }
+      .tool-card { padding: 22px 20px; }
+      .suggest-modal-inner { padding: 28px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="https://deepbyto.github.io/" class="nav-brand">DEEPBYTO</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="https://deepbyto.github.io/#about">About</a></li>
+        <li><a href="https://deepbyto.github.io/#services">Services</a></li>
+        <li><a href="https://deepbyto.github.io/#labs">Labs</a></li>
+        <li><a href="https://deepbyto.github.io/demos/" target="_blank" rel="noopener">Demos</a></li>
+        <li><a href="#" class="active">Tools</a></li>
+        <li><a href="https://deepbyto.github.io/#contact">Contact</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" id="themeIcon"></i>
+            <span class="toggle-text" id="themeLabel">Dark</span>
+          </button>
+        </li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="tools-hero">
+    <div class="container">
+      <span class="section-label">Tools</span>
+      <h1>Free <span style="color:var(--accent);">Tools</span></h1>
+      <p>Useful utilities built by DEEPBYTO to make everyday tasks easier. All tools are free, fast, and privacy-friendly.</p>
+    </div>
+  </header>
+
+  <!-- TOOLS GRID -->
+  <section class="tools-section">
+    <div class="container">
+      <div class="tools-grid" id="toolsGrid">
+        <div class="tools-loading"><i class="fas fa-spinner fa-spin"></i>Loading tools...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="fb-name">DEEPBYTO</div>
+          <div class="fb-tagline">AI & Software Innovation</div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/DEEPBYTO" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://x.com/deepbyto" target="_blank" rel="noopener">X</a>
+          <a href="https://youtube.com/@DEEPBYTO" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://discord.gg/HWhBYHjApe" target="_blank" rel="noopener">Discord</a>
+          <a href="mailto:deepbyto@gmail.com">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 DEEPBYTO. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SUGGEST MODAL -->
+  <div class="suggest-modal" id="suggestModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="suggest-modal-inner">
+      <button class="suggest-modal-close" id="suggestModalClose" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="suggest-modal-icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>Suggest a Tool</h3>
+      <p class="suggest-intro">Have an idea for a tool that would be useful? We'd love to hear it. Choose a channel below to share your suggestion with the DEEPBYTO team.</p>
+      <div class="suggest-options">
+        <a class="suggest-option" href="https://github.com/DEEPBYTO/Tools/issues/new?title=Tool%20Suggestion%3A%20&body=%23%23%20Tool%20Idea%0A%0A**What%20should%20it%20do%3F**%0A%0A%0A**Who%20is%20it%20for%3F**%0A%0A%0A**Any%20examples%3F**%0A" target="_blank" rel="noopener">
+          <span class="suggest-option-icon"><i class="fab fa-github"></i></span>
+          <span class="suggest-option-text">
+            <span class="suggest-option-title">Open a GitHub Issue</span>
+            <span class="suggest-option-desc">Best for developers — track progress publicly in the Tools repo.</span>
+          </span>
+          <span class="suggest-option-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a class="suggest-option" href="mailto:deepbyto@gmail.com?subject=Tool%20Suggestion&body=Hi%20DEEPBYTO%20team%2C%0A%0AI%20have%20an%20idea%20for%20a%20tool%3A%0A%0A**What%20should%20it%20do%3F**%0A%0A%0A**Who%20is%20it%20for%3F**%0A%0A%0A**Any%20examples%3F**%0A%0AThanks!">
+          <span class="suggest-option-icon"><i class="fas fa-envelope"></i></span>
+          <span class="suggest-option-text">
+            <span class="suggest-option-title">Send an Email</span>
+            <span class="suggest-option-desc">Email deepbyto@gmail.com with your suggestion directly.</span>
+          </span>
+          <span class="suggest-option-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a class="suggest-option" href="https://discord.gg/HWhBYHjApe" target="_blank" rel="noopener">
+          <span class="suggest-option-icon"><i class="fab fa-discord"></i></span>
+          <span class="suggest-option-text">
+            <span class="suggest-option-title">Share on Discord</span>
+            <span class="suggest-option-desc">Drop your idea in the community and chat with us live.</span>
+          </span>
+          <span class="suggest-option-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // Theme
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeLabel = document.getElementById('themeLabel');
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('deepbyto-theme', theme);
+        if (theme === 'light') {
+          themeIcon.className = 'fas fa-sun';
+          themeLabel.textContent = 'Light';
+        } else {
+          themeIcon.className = 'fas fa-moon';
+          themeLabel.textContent = 'Dark';
+        }
+      }
+      setTheme(localStorage.getItem('deepbyto-theme') || 'dark');
+      themeToggle.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        setTheme(cur === 'light' ? 'dark' : 'light');
+      });
+
+      // Navbar
+      const navbar = document.getElementById('navbar');
+      const navToggle = document.getElementById('navToggle');
+      const navLinks = document.getElementById('navLinks');
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 20);
+      });
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+        navToggle.classList.toggle('active');
+      });
+      navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          navToggle.classList.remove('active');
+        });
+      });
+
+      // Particles (simple)
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      for (let i = 0; i < 50; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.5 + 0.3,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          o: Math.random() * 0.3 + 0.05
+        });
+      }
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const light = document.documentElement.getAttribute('data-theme') === 'light';
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = light ? `rgba(0,0,0,${p.o * 1.5})` : `rgba(255,255,255,${p.o})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Modal
+      const suggestModal = document.getElementById('suggestModal');
+      const suggestModalClose = document.getElementById('suggestModalClose');
+      function openModal() {
+        suggestModal.classList.add('open');
+        suggestModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal() {
+        suggestModal.classList.remove('open');
+        suggestModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      suggestModalClose.addEventListener('click', closeModal);
+      suggestModal.addEventListener('click', e => {
+        if (e.target === suggestModal) closeModal();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && suggestModal.classList.contains('open')) closeModal();
+      });
+
+      // Tools fetch
+      const TOOLS_REPO = 'DEEPBYTO/Tools';
+      const TOOLS_API_URL = `https://api.github.com/repos/${TOOLS_REPO}/contents/`;
+      const TOOLS_BASE_URL = 'https://deepbyto.github.io/Tools/';
+      const CACHE_KEY = 'deepbyto_tools_page_folders';
+      const CACHE_DURATION = 5 * 60 * 1000;
+      const toolsGrid = document.getElementById('toolsGrid');
+
+      const SUGGEST_CARD_HTML = `
+        <div class="tool-card suggest-card" id="suggestToolCard" role="button" tabindex="0" aria-label="Suggest a new tool">
+          <span class="tool-icon"><i class="fas fa-lightbulb"></i></span>
+          <h4>Suggest a Tool</h4>
+          <p>Have an idea for a tool that would be useful? We'd love to hear it — share your suggestion with the DEEPBYTO team.</p>
+          <span class="tool-link">Share Idea <span class="arrow"><i class="fas fa-arrow-right"></i></span></span>
+        </div>`;
+
+      function slugToTitle(slug) {
+        return slug.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      function getCached() {
+        try {
+          const c = localStorage.getItem(CACHE_KEY);
+          if (c) {
+            const d = JSON.parse(c);
+            if (d.timestamp && Date.now() - d.timestamp < CACHE_DURATION) return d.folders;
+          }
+        } catch (e) {}
+        return null;
+      }
+      function setCache(folders) {
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ folders, timestamp: Date.now() }));
+        } catch (e) {}
+      }
+
+      function renderTools(folders) {
+        let html = '';
+        if (folders && folders.length > 0) {
+          html = folders.map((f, i) => {
+            const title = slugToTitle(f.name);
+            const url = TOOLS_BASE_URL + f.name + '/';
+            return `
+              <a href="${url}" class="tool-card" style="animation-delay:${(i * 0.05) + 0.05}s">
+                <span class="tool-icon"><i class="fas fa-toolbox"></i></span>
+                <h4>${title}</h4>
+                <p>Open the ${title} tool — free, fast, and privacy-friendly.</p>
+                <span class="tool-link">Open Tool <span class="arrow"><i class="fas fa-arrow-right"></i></span></span>
+              </a>`;
+          }).join('');
+        }
+        toolsGrid.innerHTML = html + SUGGEST_CARD_HTML;
+        const sc = document.getElementById('suggestToolCard');
+        if (sc) {
+          sc.addEventListener('click', openModal);
+          sc.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+          });
+        }
+      }
+
+      function fetchTools() {
+        const cached = getCached();
+        if (cached) { renderTools(cached); fetchFresh(); return; }
+        toolsGrid.innerHTML = `<div class="tools-loading"><i class="fas fa-spinner fa-spin"></i>Loading tools...</div>`;
+        fetchFresh();
+      }
+
+      function fetchFresh() {
+        fetch(TOOLS_API_URL, { headers: { 'Accept': 'application/vnd.github.v3+json' } })
+          .then(r => {
+            if (!r.ok) throw new Error('GitHub API error: ' + r.status);
+            return r.json();
+          })
+          .then(data => {
+            if (!Array.isArray(data)) throw new Error('Unexpected response');
+            const folders = data
+              .filter(item => item.type === 'dir')
+              .map(item => ({ name: item.name, path: item.path }));
+            setCache(folders);
+            renderTools(folders);
+          })
+          .catch(err => {
+            console.error(err);
+            const cached = getCached();
+            if (cached) { renderTools(cached); return; }
+            toolsGrid.innerHTML = SUGGEST_CARD_HTML;
+            const sc = document.getElementById('suggestToolCard');
+            if (sc) {
+              sc.addEventListener('click', openModal);
+              sc.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+              });
+            }
+          });
+      }
+
+      fetchTools();
+    })();
+  </script>
+</body>
+</html>
