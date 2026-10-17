@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speed Test | DEEPBYTO</title>
+  <meta name="description" content="Professional internet speed test by DEEPBYTO. Aviation-grade digital instrument panel." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://deepbyto.github.io/Tools/speed-test/" />
+  <link rel="icon" href="https://deepbyto.github.io/favicon.ico" type="image/x-icon" />
+  <meta name="theme-color" content="#050505" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Z8M6BXPP6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0Z8M6BXPP6');
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #08080a;
+      --bg-panel: #0e0e11;
+      --bg-inset: #060608;
+      --bg-screen: #041a12;
+      --line: #1c1c22;
+      --line-bright: #2a2a32;
+      --bezel: #141418;
+      --accent: #ffffff;
+      --text-primary: #e8e8ec;
+      --text-secondary: #8a8a94;
+      --text-muted: #4a4a54;
+      --screen-green: #2affb0;
+      --screen-green-dim: rgba(42,255,176,0.08);
+      --screen-green-glow: rgba(42,255,176,0.45);
+      --screen-amber: #ffb72a;
+      --screen-amber-glow: rgba(255,183,42,0.45);
+      --screen-red: #ff4d4d;
+      --screen-red-glow: rgba(255,77,77,0.45);
+      --screen-cyan: #2ad5ff;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+      --font-digit: 'Share Tech Mono', 'JetBrains Mono', monospace;
+      --wordmark-filter: brightness(0) invert(1);
+    }
+    [data-theme="light"] {
+      --bg-primary: #e8e8e6;
+      --bg-panel: #f0f0ee;
+      --bg-inset: #dcdcd8;
+      --bg-screen: #d8ede0;
+      --line: #c8c8c4;
+      --line-bright: #b4b4b0;
+      --bezel: #dcdcd8;
+      --accent: #000000;
+      --text-primary: #0d0d0d;
+      --text-secondary: #555555;
+      --text-muted: #999999;
+      --screen-green: #0a7a4a;
+      --screen-green-dim: rgba(10,122,74,0.1);
+      --screen-green-glow: rgba(10,122,74,0.3);
+      --screen-amber: #b87400;
+      --screen-red: #b81c1c;
+      --screen-cyan: #007a99;
+      --wordmark-filter: none;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 3px);
+    }
+
+    /* TOPBAR */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-primary);
+      padding: 14px 24px;
+    }
+    .topbar-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; text-decoration: none; }
+    .brand img {
+      height: 24px; width: auto;
+      filter: var(--wordmark-filter);
+      transition: filter 0.3s ease;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 22px; }
+    .topbar-nav { display: flex; gap: 24px; list-style: none; }
+    .topbar-nav a {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
+      color: var(--text-secondary); text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .topbar-nav a:hover, .topbar-nav a.active { color: var(--text-primary); }
+
+    .theme-btn {
+      width: 34px; height: 34px;
+      border-radius: 6px;
+      background: var(--bg-inset);
+      border: 1px solid var(--line-bright);
+      color: var(--text-secondary);
+      font-size: 0.8rem; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+    /* STAGE */
+    .stage {
+      flex: 1;
+      padding: 28px 24px 48px;
+      position: relative;
+      z-index: 1;
+    }
+    .stage-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* PAGE HEAD */
+    .page-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .page-head-left {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .sys-id {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      padding: 4px 8px;
+      border: 1px solid var(--line-bright);
+      border-radius: 3px;
+      background: var(--bg-inset);
+    }
+    .page-head h1 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .page-head .sub {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+    }
+
+    .status-tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      border: 1px solid var(--line-bright);
+      border-radius: 4px;
+      background: var(--bg-inset);
+    }
+    .status-tag .ind {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--text-muted);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .status-tag.running .ind {
+      background: var(--screen-amber);
+      box-shadow: 0 0 8px var(--screen-amber-glow);
+      animation: blink 0.9s infinite;
+    }
+    .status-tag.done .ind {
+      background: var(--screen-green);
+      box-shadow: 0 0 8px var(--screen-green-glow);
+    }
+    .status-tag.error .ind {
+      background: var(--screen-red);
+      box-shadow: 0 0 8px var(--screen-red-glow);
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* INSTRUMENT GRID */
+    .instrument {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    /* INSTRUMENT BOX */
+    .inst {
+      background: var(--bezel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.03),
+        0 4px 20px rgba(0,0,0,0.3);
+    }
+    .inst-inner {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .inst-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-inset);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .inst-head .idx {
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+    .inst-head .led {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--line-bright);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .inst.live .inst-head .led {
+      background: var(--screen-green);
+      box-shadow: 0 0 6px var(--screen-green-glow);
+    }
+
+    .inst-body {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* DIGITAL SCREEN */
+    .screen {
+      background: var(--bg-screen);
+      border: 1px solid var(--line-bright);
+      border-radius: 4px;
+      padding: 12px 10px 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+    }
+    .screen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 3px
+      );
+      pointer-events: none;
+    }
+    .screen-reading {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+      z-index: 1;
+    }
+    .screen-reading .num {
+      font-family: var(--font-digit);
+      font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--screen-green);
+      text-shadow: 0 0 10px var(--screen-green-glow), 0 0 20px var(--screen-green-dim);
+      font-variant-numeric: tabular-nums;
+      transition: color 0.2s;
+    }
+    .screen-reading .num.empty {
+      color: var(--text-muted);
+      text-shadow: none;
+    }
+    .screen-reading .unit {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--screen-green);
+      opacity: 0.75;
+      text-transform: uppercase;
+    }
+    .screen-caption {
+      text-align: center;
+      margin-top: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+
+    /* SEGMENTED BAR */
+    .seg-bar {
+      display: flex;
+      gap: 3px;
+      height: 14px;
+      padding: 0;
+    }
+    .seg {
+      flex: 1;
+      background: var(--bg-inset);
+      border-radius: 1px;
+      border: 1px solid var(--line);
+      transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+      min-width: 0;
+    }
+    .seg.on {
+      background: var(--screen-green);
+      border-color: var(--screen-green);
+      box-shadow: 0 0 5px var(--screen-green-glow);
+    }
+    .seg.on.warn {
+      background: var(--screen-amber);
+      border-color: var(--screen-amber);
+      box-shadow: 0 0 5px var(--screen-amber-glow);
+    }
+    .seg.on.bad {
+      background: var(--screen-red);
+      border-color: var(--screen-red);
+      box-shadow: 0 0 5px var(--screen-red-glow);
+    }
+
+    .bar-label {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    /* ====== IP / LOCATION / ISP (inside left panel) ====== */
+    .network-info {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.04em;
+    }
+    .network-info .ni-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+    .network-info .ni-row i {
+      width: 12px;
+      text-align: center;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .network-info .ni-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      min-width: 54px;
+    }
+    .network-info .ni-val {
+      color: var(--text-primary);
+      font-weight: 600;
+      word-break: break-word;
+    }
+    .network-info .ni-val.loading {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Center gauge */
+    .center-inst .inst-body {
+      padding: 18px 18px 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      margin: 4px auto 0;
+    }
+    .gauge-wrap svg { width: 100%; display: block; overflow: visible; }
+
+    .arc-track {
+      fill: none;
+      stroke: var(--line-bright);
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+    .arc-fill {
+      fill: none;
+      stroke: var(--screen-green);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 251;
+      stroke-dashoffset: 251;
+      transition: stroke-dashoffset 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      filter: drop-shadow(0 0 6px var(--screen-green-glow));
+    }
+
+    .gauge-read {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    .gauge-read .big {
+      font-family: var(--font-digit);
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 12px rgba(255,255,255,0.15);
+    }
+    .gauge-read .lbl {
+      display: block;
+      margin-top: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .gauge-scale {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 360px;
+      margin-top: 6px;
+      padding: 0 4px;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .gauge-scale span { text-align: center; }
+
+    /* BUTTON */
+    .start-btn {
+      margin-top: 14px;
+      width: 100%;
+      max-width: 360px;
+      padding: 13px 20px;
+      border: 1px solid var(--text-primary);
+      border-radius: 5px;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+    }
+    .start-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .start-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .start-btn i { font-size: 0.7rem; }
+
+    .status-msg {
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      min-height: 16px;
+      text-align: center;
+      width: 100%;
+    }
+    .status-msg.ok { color: var(--screen-green); }
+    .status-msg.err { color: var(--screen-red); }
+
+    /* FOOTER */
+    .footer-strip {
+      margin-top: 22px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--bg-panel);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .footer-strip .left { display: flex; align-items: center; gap: 10px; }
+    .footer-strip .left img {
+      height: 16px;
+      filter: var(--wordmark-filter);
+      opacity: 0.75;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .instrument {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "center center"
+          "left right";
+      }
+      .left-inst   { grid-area: left; }
+      .right-inst  { grid-area: right; }
+      .center-inst { grid-area: center; }
+    }
+    @media (max-width: 560px) {
+      .topbar-nav { display: none; }
+      .stage { padding: 18px 12px 32px; }
+      .page-head { padding: 10px 12px; }
+      .page-head h1 { font-size: 0.9rem; }
+      .instrument { grid-template-columns: 1fr; grid-template-areas: "center" "left" "right"; }
+      .sys-id { display: none; }
+      .seg-bar { gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="https://deepbyto.github.io/" class="brand">
+        <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO"
+             onerror="this.outerHTML='<span style=&quot;font-family:var(--font-mono);font-weight:700;letter-spacing:0.22em;font-size:0.9rem&quot;>DEEPBYTO</span>'" />
+      </a>
+      <div class="topbar-right">
+        <ul class="topbar-nav">
+          <li><a href="https://deepbyto.github.io/">Home</a></li>
+          <li><a href="https://deepbyto.github.io/Tools/">Tools</a></li>
+          <li><a href="#" class="active">Speed Test</a></li>
+        </ul>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="stage-inner">
+      <div class="page-head">
+        <div class="page-head-left">
+          <span class="sys-id">SYS · NET-01</span>
+          <div>
+            <h1>Network Speed Test</h1>
+            <div class="sub">LIVE MEASUREMENT</div>
+          </div>
+        </div>
+        <div class="status-tag" id="statusTag">
+          <span class="ind"></span>
+          <span id="statusLabel">Standby</span>
+        </div>
+      </div>
+
+      <div class="instrument">
+        <!-- LEFT: PING + NETWORK INFO -->
+        <div class="inst left-inst">
+          <div class="inst-inner">
+            <div class="inst-head">
+              <span>Latency</span>
+              <span class="idx">01 · PING</span>
+              <span class="led"></span>
+            </div>
+            <div class="inst-body">
+              <div class="screen">
+                <div class="screen-reading">
+                  <span class="num empty" id="pingVal">--</span>
+                  <span class="unit">ms</span>
+                </div>
+                <div class="screen-caption">RTT · Median</div>
+              </div>
+
+              <div>
+                <div class="bar-label"><span>Threshold</span><span id="pingBarLbl">0 / 200</span></div>
+                <div class="seg-bar" id="pingBar"></div>
+              </div>
+
+              <div>
+                <div class="bar-label"><span>Signal Quality</span><span id="pingQuality">-</span></div>
+                <div class="seg-bar" id="pingQualityBar"></div>
+              </div>
+
+              <!-- ====== IP / LOCATION / ISP ====== -->
+              <div class="network-info" id="networkInfo">
+                <div class="ni-row">
+                  <i class="fas fa-globe"></i>
+                  <span class="ni-label">IP</span>
+                  <span class="ni-val loading" id="ipVal">detecting...</span>
+                </div>
+                <div class="ni-row">
+                  <i class="fas fa-location-dot"></i>
+                  <span class="ni-label">Location</span>
+                  <span class="ni-val loading" id="locVal">detecting...</span>
+                </div>
+                <div class="ni-row">
+                  <i class="fas fa-network-wired"></i>
+                  <span class="ni-label">ISP</span>
+                  <span class="ni-val loading" id="ispVal">detecting...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: GAUGE -->
+        <div class="inst center-inst">
+          <div class="inst-inner">
+            <div class="inst-head">
+              <span>Throughput</span>
+              <span class="idx">02 · LIVE</span>
+              <span class="led"></span>
+            </div>
+            <div class="inst-body">
+              <div class="gauge-wrap">
+                <svg viewBox="0 0 200 120">
+                  <path class="arc-track" d="M 20 100 A 80 80 0 0 1 180 100" />
+                  <path class="arc-fill"  id="gaugeArc" d="M 20 100 A 80 80 0 0 1 180 100" />
+                </svg>
+                <div class="gauge-read">
+                  <div class="big" id="gaugeVal">0.0</div>
+                  <span class="lbl">Mbps</span>
+                </div>
+              </div>
+              <div class="gauge-scale">
+                <span>0</span>
+                <span>50</span>
+                <span>100</span>
+                <span>150</span>
+                <span>200+</span>
+              </div>
+
+              <button class="start-btn" id="startBtn">
+                <i class="fas fa-play"></i>
+                <span id="btnText">Start Test</span>
+              </button>
+
+              <div class="status-msg" id="statusMsg">Starting test automatically...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: DL / UL -->
+        <div class="inst right-inst">
+          <div class="inst-inner">
+            <div class="inst-head">
+              <span>Transfer</span>
+              <span class="idx">03 · DL·UL</span>
+              <span class="led"></span>
+            </div>
+            <div class="inst-body">
+              <div class="screen">
+                <div class="screen-reading">
+                  <span class="num empty" id="dlVal">--</span>
+                  <span class="unit">Mbps</span>
+                </div>
+                <div class="screen-caption">DOWNLOAD</div>
+              </div>
+              <div>
+                <div class="bar-label"><span>DL</span><span id="dlBarLbl">0 / 200</span></div>
+                <div class="seg-bar" id="dlBar"></div>
+              </div>
+
+              <div class="screen">
+                <div class="screen-reading">
+                  <span class="num empty" id="ulVal">--</span>
+                  <span class="unit">Mbps</span>
+                </div>
+                <div class="screen-caption">UPLOAD</div>
+              </div>
+              <div>
+                <div class="bar-label"><span>UL</span><span id="ulBarLbl">0 / 100</span></div>
+                <div class="seg-bar" id="ulBar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-strip">
+        <div class="left">
+          <span>BUILT BY</span>
+          <img src="https://deepbyto.github.io/wordmark.png" alt="DEEPBYTO"
+               onerror="this.outerHTML='<strong style=&quot;font-family:var(--font-mono);letter-spacing:0.18em;font-size:0.72rem;color:var(--text-secondary)&quot;>DEEPBYTO</strong>'" />
+        </div>
+        <div>deepbyto.github.io · speed-test · v1.0</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* THEME */
+      const themeBtn  = document.getElementById('themeBtn');
+      const themeIcon = document.getElementById('themeIcon');
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        themeIcon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = theme === 'light' ? '#e8e8e6' : '#08080a';
+        localStorage.setItem('deepbyto-theme', theme);
+      }
+      themeBtn.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        applyTheme(cur === 'light' ? 'dark' : 'light');
+      });
+      applyTheme(localStorage.getItem('deepbyto-theme') || 'dark');
+
+      /* ===== CAPS ===== */
+      const GAUGE_MAX = 251;
+      const GAUGE_CAP = 200;
+      const PING_CAP  = 200;
+      const DL_CAP    = 200;
+      const UL_CAP    = 100;
+
+      /* ===== SEGMENTED BARS CONFIG ===== */
+      const SEG_COUNT = { ping: 20, quality: 12, dl: 24, ul: 20 };
+
+      function buildSegments(container, count) {
+        container.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement('div');
+          s.className = 'seg';
+          container.appendChild(s);
+        }
+      }
+      const pingBarEl = document.getElementById('pingBar');
+      const dlBarEl   = document.getElementById('dlBar');
+      const ulBarEl   = document.getElementById('ulBar');
+      const pingQualityBarEl = document.getElementById('pingQualityBar');
+
+      buildSegments(pingBarEl, SEG_COUNT.ping);
+      buildSegments(dlBarEl, SEG_COUNT.dl);
+      buildSegments(ulBarEl, SEG_COUNT.ul);
+      buildSegments(pingQualityBarEl, SEG_COUNT.quality);
+
+      function fillSegments(container, ratio, severity) {
+        const segs = container.querySelectorAll('.seg');
+        const on = Math.round(ratio * segs.length);
+        segs.forEach((s, i) => {
+          s.className = 'seg';
+          if (i < on) {
+            s.classList.add('on');
+            if (severity === 'warn') s.classList.add('warn');
+            else if (severity === 'bad') s.classList.add('bad');
+          }
+        });
+      }
+      function clearSegments(container) {
+        container.querySelectorAll('.seg').forEach(s => s.className = 'seg');
+      }
+
+      /* STATE */
+      const startBtn   = document.getElementById('startBtn');
+      const btnText    = document.getElementById('btnText');
+      const statusMsg  = document.getElementById('statusMsg');
+      const statusTag  = document.getElementById('statusTag');
+      const statusLabel= document.getElementById('statusLabel');
+
+      const gaugeArc   = document.getElementById('gaugeArc');
+      const gaugeVal   = document.getElementById('gaugeVal');
+
+      const pingVal    = document.getElementById('pingVal');
+      const pingBarLbl = document.getElementById('pingBarLbl');
+      const pingQuality= document.getElementById('pingQuality');
+
+      const dlVal      = document.getElementById('dlVal');
+      const dlBarLbl   = document.getElementById('dlBarLbl');
+      const ulVal      = document.getElementById('ulVal');
+      const ulBarLbl   = document.getElementById('ulBarLbl');
+
+      let testRunning = false;
+
+      function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+      function bitsToMbps(bytes, secs) { return (bytes * 8) / secs / 1_000_000; }
+
+      function setStatus(text, state) {
+        statusMsg.textContent = text;
+        statusMsg.classList.remove('ok', 'err');
+        statusTag.classList.remove('running', 'done', 'error');
+        if (state === 'running') {
+          statusTag.classList.add('running');
+          statusLabel.textContent = 'Running';
+        } else if (state === 'done') {
+          statusTag.classList.add('done');
+          statusLabel.textContent = 'Complete';
+          statusMsg.classList.add('ok');
+        } else if (state === 'error') {
+          statusTag.classList.add('error');
+          statusLabel.textContent = 'Error';
+          statusMsg.classList.add('err');
+        } else {
+          statusLabel.textContent = 'Standby';
+        }
+      }
+
+      function setGauge(mbps) {
+        const ratio = clamp(mbps / GAUGE_CAP, 0, 1);
+        gaugeArc.style.strokeDashoffset = GAUGE_MAX - (GAUGE_MAX * ratio);
+        gaugeVal.textContent = mbps.toFixed(1);
+      }
+
+      function setPing(ms) {
+        pingVal.textContent = Math.round(ms);
+        pingVal.classList.remove('empty');
+        const ratio = clamp(ms / PING_CAP, 0, 1);
+
+        let sev = null;
+        if (ms >= 120) sev = 'bad';
+        else if (ms >= 50) sev = 'warn';
+
+        fillSegments(pingBarEl, ratio, sev);
+        pingBarLbl.textContent = Math.round(ms) + ' / ' + PING_CAP;
+
+        const qualityRatio = clamp(1 - (ms / PING_CAP), 0, 1);
+        fillSegments(pingQualityBarEl, qualityRatio, sev);
+        let q = 'EXCELLENT';
+        if (ms >= 150) q = 'POOR';
+        else if (ms >= 100) q = 'FAIR';
+        else if (ms >= 50) q = 'GOOD';
+        pingQuality.textContent = q;
+      }
+
+      function setDownload(mbps) {
+        dlVal.textContent = mbps.toFixed(2);
+        dlVal.classList.remove('empty');
+        const ratio = clamp(mbps / DL_CAP, 0, 1);
+        let sev = null;
+        if (mbps < 5) sev = 'bad';
+        else if (mbps < 25) sev = 'warn';
+        fillSegments(dlBarEl, ratio, sev);
+        dlBarLbl.textContent = mbps.toFixed(1) + ' / ' + DL_CAP;
+      }
+
+      function setUpload(mbps) {
+        ulVal.textContent = mbps.toFixed(2);
+        ulVal.classList.remove('empty');
+        const ratio = clamp(mbps / UL_CAP, 0, 1);
+        let sev = null;
+        if (mbps < 2) sev = 'bad';
+        else if (mbps < 10) sev = 'warn';
+        fillSegments(ulBarEl, ratio, sev);
+        ulBarLbl.textContent = mbps.toFixed(1) + ' / ' + UL_CAP;
+      }
+
+      function resetUI() {
+        gaugeVal.textContent = '0.0';
+        gaugeArc.style.strokeDashoffset = GAUGE_MAX;
+
+        pingVal.textContent = '--'; pingVal.classList.add('empty');
+        pingBarLbl.textContent = '0 / ' + PING_CAP;
+        pingQuality.textContent = '-';
+        clearSegments(pingBarEl);
+        clearSegments(pingQualityBarEl);
+
+        dlVal.textContent = '--'; dlVal.classList.add('empty');
+        dlBarLbl.textContent = '0 / ' + DL_CAP;
+        clearSegments(dlBarEl);
+
+        ulVal.textContent = '--'; ulVal.classList.add('empty');
+        ulBarLbl.textContent = '0 / ' + UL_CAP;
+        clearSegments(ulBarEl);
+      }
+
+      function fetchWithTimeout(url, opts = {}, ms = 10000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        return fetch(url, { ...opts, signal: controller.signal })
+          .finally(() => clearTimeout(timer));
+      }
+
+      /* ====== IP + LOCATION DETECTION (Cloudflare Meta API) ====== */
+      async function detectIPAndLocation() {
+        const ipEl  = document.getElementById('ipVal');
+        const locEl = document.getElementById('locVal');
+        const ispEl = document.getElementById('ispVal');
+
+        try {
+          const res = await fetchWithTimeout('https://speed.cloudflare.com/meta', {}, 6000);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+
+          if (data.clientIp) {
+            ipEl.textContent = data.clientIp;
+            ipEl.classList.remove('loading');
+          } else {
+            ipEl.textContent = 'Unknown';
+            ipEl.classList.remove('loading');
+          }
+
+          const locParts = [];
+          if (data.city) locParts.push(data.city);
+          if (data.region) locParts.push(data.region);
+          if (data.country) locParts.push(data.country);
+          if (locParts.length > 0) {
+            locEl.textContent = locParts.join(', ');
+            locEl.classList.remove('loading');
+          } else {
+            locEl.textContent = 'Unknown';
+            locEl.classList.remove('loading');
+          }
+
+          if (data.asOrganization) {
+            ispEl.textContent = data.asOrganization;
+            ispEl.classList.remove('loading');
+          } else {
+            ispEl.textContent = 'Unknown';
+            ispEl.classList.remove('loading');
+          }
+        } catch (err) {
+          console.warn('IP/Location detection failed:', err);
+          ipEl.textContent = 'Unavailable';
+          ipEl.classList.remove('loading');
+          locEl.textContent = 'Unavailable';
+          locEl.classList.remove('loading');
+          ispEl.textContent = 'Unavailable';
+          ispEl.classList.remove('loading');
+        }
+      }
+
+      async function testPing() {
+        setStatus('Measuring latency...', 'running');
+        const samples = [];
+        for (let i = 0; i < 6; i++) {
+          const t0 = performance.now();
+          try {
+            await fetchWithTimeout('https://speed.cloudflare.com/__down?bytes=0', { cache: 'no-store' }, 5000);
+            samples.push(performance.now() - t0);
+          } catch (_) { /* ignore */ }
+          if (samples.length > 0) {
+            const sorted = [...samples].sort((a, b) => a - b);
+            setPing(sorted[Math.floor(sorted.length / 2)]);
+          }
+        }
+        if (samples.length === 0) {
+          throw new Error('Ping test failed. Check connection or disable adblocker.');
+        }
+        samples.sort((a, b) => a - b);
+        const ping = samples[Math.floor(samples.length / 2)];
+        setPing(ping);
+        return ping;
+      }
+
+      async function testDownload() {
+        setStatus('Measuring download speed...', 'running');
+        const SIZE = 25_000_000;
+        const url = 'https://speed.cloudflare.com/__down?bytes=' + SIZE;
+
+        const t0 = performance.now();
+        let received = 0;
+        let lastUpdate = 0;
+
+        try {
+          const res = await fetchWithTimeout(url, { cache: 'no-store' }, 12000);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          if (!res.body || !res.body.getReader) {
+            const buf = await res.arrayBuffer();
+            received = buf.byteLength;
+            const mbps = bitsToMbps(received, (performance.now() - t0) / 1000);
+            setDownload(mbps);
+            setGauge(mbps);
+            return mbps;
+          } else {
+            const reader = res.body.getReader();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              received += value.length;
+              const elapsed = (performance.now() - t0) / 1000;
+              if (elapsed - lastUpdate > 0.15) {
+                const mbps = bitsToMbps(received, elapsed);
+                setGauge(mbps);
+                setDownload(mbps);
+                lastUpdate = elapsed;
+              }
+            }
+          }
+        } catch (err) {
+          if (received > 0) {
+            const total = (performance.now() - t0) / 1000;
+            const mbps = bitsToMbps(received, total);
+            setDownload(mbps);
+            setGauge(mbps);
+            return mbps;
+          }
+          throw new Error('Download test failed: ' + err.message);
+        }
+
+        const total = (performance.now() - t0) / 1000;
+        const mbps = bitsToMbps(received, total);
+        setDownload(mbps);
+        setGauge(mbps);
+        return mbps;
+      }
+
+      function testUpload() {
+        return new Promise((resolve, reject) => {
+          setStatus('Measuring upload speed...', 'running');
+          const SIZE = 10_000_000;
+          const data = new Uint8Array(SIZE);
+          const xhr = new XMLHttpRequest();
+          const t0 = performance.now();
+          let lastUpdate = 0;
+
+          xhr.open('POST', 'https://speed.cloudflare.com/__up', true);
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+          xhr.timeout = 12000;
+
+          xhr.upload.onprogress = (e) => {
+            if (!e.lengthComputable) return;
+            const elapsed = (performance.now() - t0) / 1000;
+            if (elapsed - lastUpdate > 0.1) {
+              const mbps = bitsToMbps(e.loaded, elapsed);
+              setUpload(mbps);
+              lastUpdate = elapsed;
+            }
+          };
+
+          xhr.onload = () => {
+            const total = (performance.now() - t0) / 1000;
+            const mbps = bitsToMbps(SIZE, total);
+            setUpload(mbps);
+            resolve(mbps);
+          };
+
+          xhr.onerror = () => {
+            const total = (performance.now() - t0) / 1000;
+            if (total > 0.5) {
+              const mbps = bitsToMbps(SIZE, total);
+              setUpload(mbps);
+              resolve(mbps);
+              return;
+            }
+            reject(new Error('Upload test failed. Check connection.'));
+          };
+
+          xhr.ontimeout = () => {
+            const total = (performance.now() - t0) / 1000;
+            if (total > 0.5) {
+              const mbps = bitsToMbps(SIZE, total);
+              setUpload(mbps);
+              resolve(mbps);
+              return;
+            }
+            reject(new Error('Upload timed out.'));
+          };
+
+          xhr.send(data);
+        });
+      }
+
+      async function runTest() {
+        if (testRunning) return;
+        testRunning = true;
+        startBtn.disabled = true;
+        btnText.textContent = 'Testing';
+        resetUI();
+
+        document.querySelectorAll('.inst').forEach(i => i.classList.add('live'));
+
+        try {
+          const ping = await testPing();
+          const dl = await testDownload();
+          const ul = await testUpload();
+          setStatus('Complete · ' + ping + ' ms · ' + dl.toFixed(1) + ' down / ' + ul.toFixed(1) + ' up', 'done');
+        } catch (err) {
+          console.error(err);
+          setStatus('Failed. ' + err.message, 'error');
+        } finally {
+          startBtn.disabled = false;
+          btnText.textContent = 'Test Again';
+          document.querySelectorAll('.inst').forEach(i => i.classList.remove('live'));
+          testRunning = false;
+        }
+      }
+
+      startBtn.addEventListener('click', runTest);
+
+      /* BOOT: auto start + detect IP/location */
+      resetUI();
+      detectIPAndLocation();
+      setStatus('Starting test automatically...', 'running');
+      setTimeout(runTest, 400);
+      console.log('DEEPBYTO | Speed Test initialized');
+    })();
+  </script>
+</body>
+</html>
