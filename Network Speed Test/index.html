@@ -1051,21 +1051,23 @@
           .finally(() => clearTimeout(timer));
       }
 
-      /* ====== IP + LOCATION DETECTION ====== */
+      /* ====== IP + LOCATION DETECTION (Cloudflare Meta API) ====== */
       async function detectIPAndLocation() {
         const ipEl  = document.getElementById('ipVal');
         const locEl = document.getElementById('locVal');
         const ispEl = document.getElementById('ispVal');
 
         try {
-          // Using ipapi.co (free tier, no key needed for basic use)
-          const res = await fetchWithTimeout('https://ipapi.co/json/', {}, 6000);
+          const res = await fetchWithTimeout('https://speed.cloudflare.com/meta', {}, 6000);
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
 
           // IP
-          if (data.ip) {
-            ipEl.textContent = data.ip;
+          if (data.clientIp) {
+            ipEl.textContent = data.clientIp;
+            ipEl.classList.remove('loading');
+          } else {
+            ipEl.textContent = 'Unknown';
             ipEl.classList.remove('loading');
           }
 
@@ -1073,7 +1075,7 @@
           const locParts = [];
           if (data.city) locParts.push(data.city);
           if (data.region) locParts.push(data.region);
-          if (data.country_name) locParts.push(data.country_name);
+          if (data.country) locParts.push(data.country);
           if (locParts.length > 0) {
             locEl.textContent = locParts.join(', ');
             locEl.classList.remove('loading');
@@ -1083,8 +1085,8 @@
           }
 
           // ISP
-          if (data.org) {
-            ispEl.textContent = data.org;
+          if (data.asOrganization) {
+            ispEl.textContent = data.asOrganization;
             ispEl.classList.remove('loading');
           } else {
             ispEl.textContent = 'Unknown';
