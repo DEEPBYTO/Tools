@@ -41,12 +41,17 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- DEEPBYTO Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Z8M6BXPP6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0Z8M6BXPP6');
+  </script>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg-primary: #000000;
@@ -111,10 +116,7 @@
       --footer-border: rgba(0,0,0,0.1);
     }
 
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
     body {
       font-family: var(--font-sans);
@@ -125,16 +127,9 @@
       transition: background 0.4s ease, color 0.3s ease;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color var(--transition);
-    }
+    a { color: inherit; text-decoration: none; transition: color var(--transition); }
 
-    ::selection {
-      background: var(--accent);
-      color: var(--bg-primary);
-    }
+    ::selection { background: var(--accent); color: var(--bg-primary); }
 
     .container {
       max-width: 1200px;
@@ -144,190 +139,153 @@
       z-index: 2;
     }
 
-    /* NAVBAR */
+    /* =========================================================
+       HEADER CSS (from index.html)
+       ========================================================= */
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      background: none; border: 1px solid var(--glass-border);
+      border-radius: 50px; padding: 6px 14px 6px 10px;
+      color: var(--text-secondary); font-size: 0.75rem; font-weight: 500;
+      cursor: pointer; transition: all var(--transition);
+      font-family: var(--font-sans); background: var(--badge-bg);
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--text-primary); background: var(--accent-dim); }
+    .theme-toggle i { font-size: 0.9rem; }
+    .theme-toggle .toggle-icon { display: flex; align-items: center; gap: 4px; }
+
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 16px 0;
-      background: var(--nav-bg);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 16px 0; background: var(--nav-bg);
       backdrop-filter: blur(18px) saturate(1.2);
       -webkit-backdrop-filter: blur(18px) saturate(1.2);
       border-bottom: 1px solid var(--glass-border);
       transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
     }
-
     .navbar.scrolled {
       background: var(--nav-scrolled);
       backdrop-filter: blur(24px) saturate(1.3);
       -webkit-backdrop-filter: blur(24px) saturate(1.3);
       box-shadow: 0 4px 25px var(--shadow-color);
     }
-
-    .navbar .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-brand .wordmark {
-      height: 26px;
-      width: auto;
-      display: block;
-      filter: var(--wordmark-filter);
-      transition: filter 0.4s ease;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; }
+    .nav-brand .wordmark { height: 26px; width: auto; display: block; filter: var(--wordmark-filter); transition: filter 0.4s ease; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
     .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 0.02em;
-      transition: color var(--transition);
-      position: relative;
+      font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+      letter-spacing: 0.02em; transition: color var(--transition); position: relative;
     }
-
     .nav-links a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width var(--transition);
-      border-radius: 4px;
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width var(--transition); border-radius: 4px;
     }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--text-primary); }
+    .nav-links a.active::after { width: 100%; }
 
-    .nav-links a:hover {
-      color: var(--text-primary);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-links a.active {
-      color: var(--text-primary);
-    }
-
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
-    /* THEME TOGGLE */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--badge-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
-      padding: 6px 14px 6px 10px;
-      color: var(--text-secondary);
-      font-size: 0.75rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-family: var(--font-sans);
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--accent);
-      color: var(--text-primary);
-      background: var(--accent-dim);
-    }
-
-    .theme-toggle i {
-      font-size: 0.9rem;
-    }
-
-    .theme-toggle .toggle-icon {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* NAV CTA */
     .nav-cta {
-      display: inline-block;
-      padding: 8px 20px;
-      border-radius: 50px;
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-color) !important;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.03em;
+      display: inline-block; padding: 8px 20px; border-radius: 50px;
+      background: var(--btn-primary-bg); color: var(--btn-primary-color) !important;
+      font-weight: 600; font-size: 0.8rem; letter-spacing: 0.03em;
       transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-      border: none;
-      cursor: pointer;
+      border: none; cursor: pointer;
     }
+    .nav-cta:hover { background: var(--btn-primary-hover); color: var(--btn-primary-color) !important; transform: translateY(-1px); box-shadow: 0 8px 20px var(--accent-glow); }
+    .nav-cta::after { display: none !important; }
 
-    .nav-cta:hover {
-      background: var(--btn-primary-hover);
-      color: var(--btn-primary-color) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px var(--accent-glow);
+    .nav-dropdown { position: relative; list-style: none; }
+    .nav-dropdown-toggle {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500;
+      color: var(--text-secondary); letter-spacing: 0.02em;
+      transition: color var(--transition); position: relative;
     }
-
-    .nav-cta::after {
-      display: none !important;
+    .nav-dropdown-toggle .dd-text { position: relative; }
+    .nav-dropdown-toggle .dd-text::after {
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width var(--transition); border-radius: 4px;
     }
+    .nav-dropdown-toggle:hover .dd-text { color: var(--text-primary); }
+    .nav-dropdown-toggle:hover .dd-text::after { width: 100%; }
+    .nav-dropdown-toggle .dd-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; transition: transform 0.3s ease;
+      padding: 4px; border-radius: 4px; cursor: pointer;
+    }
+    .nav-dropdown-toggle .dd-arrow:hover { background: var(--accent-dim); }
+    .nav-dropdown.open .nav-dropdown-toggle .dd-text { color: var(--text-primary); }
+    .nav-dropdown.open .nav-dropdown-toggle .dd-text::after { width: 100%; }
+    .nav-dropdown.open .nav-dropdown-toggle .dd-arrow { transform: rotate(180deg); }
+    .nav-dropdown-toggle.active .dd-text { color: var(--text-primary); }
+    .nav-dropdown-toggle.active .dd-text::after { width: 100%; }
 
-    /* HAMBURGER */
+    .nav-dropdown-menu {
+      position: absolute; top: calc(100% + 16px); left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 250px; list-style: none; margin: 0; padding: 8px;
+      background: var(--nav-scrolled);
+      backdrop-filter: blur(22px) saturate(1.3);
+      -webkit-backdrop-filter: blur(22px) saturate(1.3);
+      border: 1px solid var(--glass-border); border-radius: 14px;
+      box-shadow: 0 18px 45px var(--shadow-color);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+      z-index: 1002;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .nav-dropdown-menu li { list-style: none; }
+    .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 14px; border-radius: 9px;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--text-secondary); white-space: nowrap;
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav-dropdown-menu a::after { display: none !important; }
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a:focus-visible { background: var(--accent-dim); color: var(--text-primary); outline: none; }
+    .nav-dropdown-menu a i { width: 16px; text-align: center; font-size: 0.8rem; }
+
     .nav-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 6px;
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      padding: 6px; border-radius: 6px;
     }
+    .nav-toggle:hover { background: var(--accent-dim); }
+    .nav-toggle span { display: block; width: 26px; height: 2px; background: var(--text-primary); border-radius: 4px; transition: all 0.3s ease; transform-origin: center; }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-    .nav-toggle:hover {
-      background: var(--accent-dim);
+    /* =========================================================
+       FOOTER CSS (from index.html)
+       ========================================================= */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--footer-border);
+      background: var(--bg-primary);
+      transition: background 0.4s ease, border-color 0.3s ease;
+      position: relative; overflow: hidden;
     }
+    .footer .container { position: relative; z-index: 1; }
+    .footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; }
+    .footer-brand .fb-name { display: flex; align-items: center; }
+    .footer-brand .fb-name img { height: 22px; width: auto; filter: var(--wordmark-filter); transition: filter 0.4s ease; }
+    .footer-brand .fb-tagline { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px 28px; }
+    .footer-links a { font-size: 0.8rem; color: var(--text-secondary); transition: color var(--transition); }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--footer-border); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+    .footer-bottom p { font-size: 0.75rem; color: var(--text-muted); }
 
-    .nav-toggle span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--text-primary);
-      border-radius: 4px;
-      transition: all 0.3s ease;
-      transform-origin: center;
-    }
-
-    .nav-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .nav-toggle.active span:nth-child(2) {
-      opacity: 0;
-      transform: scaleX(0);
-    }
-
-    .nav-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    /* HERO */
+    /* =========================================================
+       HERO
+       ========================================================= */
     .hero {
       position: relative;
       z-index: 1;
@@ -335,7 +293,6 @@
       overflow: hidden;
       background: var(--bg-primary);
     }
-
     .hero-content {
       position: relative;
       z-index: 2;
@@ -343,7 +300,6 @@
       margin: 0 auto;
       text-align: center;
     }
-
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -361,7 +317,6 @@
       font-family: var(--font-display);
       text-transform: uppercase;
     }
-
     .hero-badge .badge-dot {
       display: inline-block;
       width: 6px;
@@ -370,19 +325,10 @@
       background: var(--accent);
       animation: pulse-dot 2s ease-in-out infinite;
     }
-
     @keyframes pulse-dot {
-      0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.75);
-      }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
     }
-
     .hero-title {
       font-family: var(--font-display);
       font-weight: 800;
@@ -392,7 +338,6 @@
       margin-bottom: 18px;
       color: var(--text-primary);
     }
-
     .hero-description {
       font-size: 1.1rem;
       color: var(--text-secondary);
@@ -416,7 +361,6 @@
       border-radius: 50px;
       border: 1px solid var(--glass-border);
     }
-
     .section-title {
       font-family: var(--font-display);
       font-weight: 700;
@@ -433,12 +377,10 @@
       position: relative;
       z-index: 2;
     }
-
     .tool {
       max-width: 700px;
       margin: 0 auto;
     }
-
     .panel {
       background: var(--bg-card);
       backdrop-filter: blur(10px);
@@ -449,15 +391,8 @@
       box-shadow: 0 20px 70px rgba(0,0,0,.4);
       transition: border-color var(--transition), background 0.4s ease;
     }
-
-    .panel:hover {
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    [data-theme="light"] .panel:hover {
-      border-color: rgba(0,0,0,0.2);
-    }
-
+    .panel:hover { border-color: rgba(255,255,255,0.2); }
+    [data-theme="light"] .panel:hover { border-color: rgba(0,0,0,0.2); }
     .panel h2 {
       font-family: var(--font-display);
       font-size: 1.1rem;
@@ -481,19 +416,9 @@
       transition: border-color 0.2s ease;
       overflow: hidden;
     }
-
-    [data-theme="light"] .password-display {
-      background: rgba(255,255,255,0.6);
-    }
-
-    .password-display:focus-within {
-      border-color: rgba(255,255,255,0.35);
-    }
-
-    [data-theme="light"] .password-display:focus-within {
-      border-color: rgba(0,0,0,0.35);
-    }
-
+    [data-theme="light"] .password-display { background: rgba(255,255,255,0.6); }
+    .password-display:focus-within { border-color: rgba(255,255,255,0.35); }
+    [data-theme="light"] .password-display:focus-within { border-color: rgba(0,0,0,0.35); }
     .password-text {
       font-family: 'Courier New', 'Consolas', monospace;
       font-size: 1.25rem;
@@ -506,7 +431,6 @@
       user-select: all;
       cursor: text;
     }
-
     .password-actions {
       position: absolute;
       top: 50%;
@@ -515,7 +439,6 @@
       display: flex;
       gap: 6px;
     }
-
     .icon-btn {
       width: 38px;
       height: 38px;
@@ -531,30 +454,22 @@
       transition: all 0.25s ease;
       padding: 0;
     }
-
     .icon-btn:hover {
       background: var(--accent);
       color: var(--bg-primary);
       border-color: var(--accent);
       transform: translateY(-1px);
     }
-
-    .icon-btn:active {
-      transform: translateY(0) scale(0.96);
-    }
+    .icon-btn:active { transform: translateY(0) scale(0.96); }
 
     /* STRENGTH METER */
-    .strength-wrapper {
-      margin-bottom: 24px;
-    }
-
+    .strength-wrapper { margin-bottom: 24px; }
     .strength-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
-
     .strength-label {
       font-size: 0.7rem;
       color: var(--text-muted);
@@ -562,7 +477,6 @@
       text-transform: uppercase;
       font-weight: 600;
     }
-
     .strength-value {
       font-size: 0.75rem;
       font-weight: 700;
@@ -570,7 +484,6 @@
       text-transform: uppercase;
       transition: color 0.3s ease;
     }
-
     .strength-bar {
       width: 100%;
       height: 6px;
@@ -580,7 +493,6 @@
       display: flex;
       gap: 3px;
     }
-
     .strength-segment {
       flex: 1;
       height: 100%;
@@ -588,13 +500,10 @@
       border-radius: 4px;
       transition: background 0.35s ease;
     }
-
-    /* Strength levels */
     .strength-value.weak { color: var(--danger); }
     .strength-value.fair { color: var(--warning); }
     .strength-value.good { color: var(--info); }
     .strength-value.strong { color: var(--success); }
-
     .strength-segment.active.weak { background: var(--danger); }
     .strength-segment.active.fair { background: var(--warning); }
     .strength-segment.active.good { background: var(--info); }
@@ -607,34 +516,28 @@
       gap: 18px;
       margin-bottom: 24px;
     }
-
     .option-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
-
     .option-label {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
-
     .option-label .opt-title {
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--text-primary);
       letter-spacing: 0.02em;
     }
-
     .option-label .opt-desc {
       font-size: 0.7rem;
       color: var(--text-muted);
       letter-spacing: 0.02em;
     }
-
-    /* Length slider */
     .length-control {
       display: flex;
       align-items: center;
@@ -642,7 +545,6 @@
       flex: 1;
       max-width: 320px;
     }
-
     input[type="range"] {
       -webkit-appearance: none;
       appearance: none;
@@ -653,7 +555,6 @@
       outline: none;
       cursor: pointer;
     }
-
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -666,12 +567,10 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 2px 8px var(--accent-glow);
     }
-
     input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.15);
       box-shadow: 0 4px 14px var(--accent-glow);
     }
-
     input[type="range"]::-moz-range-thumb {
       width: 20px;
       height: 20px;
@@ -682,11 +581,7 @@
       transition: transform 0.2s ease;
       box-shadow: 0 2px 8px var(--accent-glow);
     }
-
-    input[type="range"]::-moz-range-thumb:hover {
-      transform: scale(1.15);
-    }
-
+    input[type="range"]::-moz-range-thumb:hover { transform: scale(1.15); }
     .length-value {
       font-family: var(--font-display);
       font-size: 1rem;
@@ -699,8 +594,6 @@
       border-radius: 8px;
       padding: 4px 8px;
     }
-
-    /* Toggle switches */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -708,13 +601,7 @@
       height: 26px;
       flex-shrink: 0;
     }
-
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
     .toggle-slider {
       position: absolute;
       cursor: pointer;
@@ -727,7 +614,6 @@
       border-radius: 26px;
       transition: 0.3s ease;
     }
-
     .toggle-slider:before {
       position: absolute;
       content: "";
@@ -739,12 +625,10 @@
       border-radius: 50%;
       transition: 0.3s ease;
     }
-
     .toggle-switch input:checked + .toggle-slider {
       background: var(--btn-primary-bg);
       border-color: var(--btn-primary-bg);
     }
-
     .toggle-switch input:checked + .toggle-slider:before {
       transform: translateX(22px);
       background: var(--btn-primary-color);
@@ -757,7 +641,6 @@
       flex-wrap: wrap;
       margin-top: 4px;
     }
-
     button {
       border: 0;
       cursor: pointer;
@@ -769,26 +652,22 @@
       font-family: var(--font-sans);
       letter-spacing: 0.02em;
     }
-
     .primary {
       background: var(--btn-primary-bg);
       color: var(--btn-primary-color);
       flex: 1;
       box-shadow: 0 4px 15px var(--accent-glow);
     }
-
     .primary:hover {
       background: var(--btn-primary-hover);
       transform: translateY(-1px);
       box-shadow: 0 8px 25px var(--accent-glow);
     }
-
     .secondary {
       background: transparent;
       color: var(--text-primary);
       border: 1px solid var(--btn-secondary-border);
     }
-
     .secondary:hover {
       background: var(--btn-secondary-hover-bg);
       border-color: var(--accent);
@@ -800,14 +679,12 @@
       padding-top: 24px;
       border-top: 1px solid var(--glass-border);
     }
-
     .bulk-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
     }
-
     .bulk-title {
       font-family: var(--font-display);
       font-size: 0.85rem;
@@ -818,11 +695,7 @@
       align-items: center;
       gap: 8px;
     }
-
-    .bulk-title i {
-      font-size: 0.9rem;
-    }
-
+    .bulk-title i { font-size: 0.9rem; }
     .bulk-list {
       display: flex;
       flex-direction: column;
@@ -831,20 +704,9 @@
       overflow-y: auto;
       padding-right: 4px;
     }
-
-    .bulk-list::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .bulk-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .bulk-list::-webkit-scrollbar-thumb {
-      background: var(--accent-dim);
-      border-radius: 4px;
-    }
-
+    .bulk-list::-webkit-scrollbar { width: 6px; }
+    .bulk-list::-webkit-scrollbar-track { background: transparent; }
+    .bulk-list::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 4px; }
     .bulk-item {
       display: flex;
       align-items: center;
@@ -855,11 +717,7 @@
       border-radius: 10px;
       transition: border-color 0.2s ease;
     }
-
-    .bulk-item:hover {
-      border-color: var(--accent);
-    }
-
+    .bulk-item:hover { border-color: var(--accent); }
     .bulk-item .bulk-index {
       font-family: var(--font-display);
       font-size: 0.7rem;
@@ -868,7 +726,6 @@
       min-width: 22px;
       flex-shrink: 0;
     }
-
     .bulk-item .bulk-pass {
       font-family: 'Courier New', 'Consolas', monospace;
       font-size: 0.82rem;
@@ -877,7 +734,6 @@
       flex: 1;
       user-select: all;
     }
-
     .bulk-item .bulk-copy {
       background: none;
       border: none;
@@ -889,7 +745,6 @@
       transition: color 0.2s, background 0.2s;
       flex-shrink: 0;
     }
-
     .bulk-item .bulk-copy:hover {
       color: var(--text-primary);
       background: var(--accent-dim);
@@ -904,14 +759,8 @@
       text-align: center;
       transition: color 0.2s;
     }
-
-    .status.success {
-      color: var(--success);
-    }
-
-    .status.error {
-      color: var(--danger);
-    }
+    .status.success { color: var(--success); }
+    .status.error { color: var(--danger); }
 
     /* FEATURES */
     .info {
@@ -923,22 +772,14 @@
       border-bottom: 1px solid var(--border-subtle);
       transition: background 0.4s ease, border-color 0.3s ease;
     }
-
-    .info .container {
-      text-align: center;
-    }
-
-    .info h2 {
-      margin-bottom: 48px;
-    }
-
+    .info .container { text-align: center; }
+    .info h2 { margin-bottom: 48px; }
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       text-align: left;
     }
-
     .feature {
       padding: 26px 22px;
       border: 1px solid var(--glass-border);
@@ -948,20 +789,17 @@
       -webkit-backdrop-filter: blur(10px);
       transition: all var(--transition);
     }
-
     .feature:hover {
       border-color: var(--accent);
       transform: translateY(-4px);
       box-shadow: 0 12px 25px var(--shadow-color);
     }
-
     .feature .feature-icon {
       font-size: 1.5rem;
       color: var(--text-primary);
       margin-bottom: 14px;
       display: block;
     }
-
     .feature h3 {
       font-family: var(--font-display);
       font-size: 0.95rem;
@@ -970,99 +808,10 @@
       color: var(--text-primary);
       letter-spacing: 0.02em;
     }
-
     .feature p {
       color: var(--text-secondary);
       font-size: 0.85rem;
       line-height: 1.6;
-    }
-
-    /* FOOTER */
-    .footer {
-      padding: 48px 0 32px;
-      border-top: 1px solid var(--footer-border);
-      background: var(--bg-primary);
-      position: relative;
-      overflow: hidden;
-      transition: background 0.4s ease, border-color 0.3s ease;
-    }
-
-    .footer .container {
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .footer-brand .fb-name {
-      display: flex;
-      align-items: center;
-    }
-
-    .footer-brand .fb-name img {
-      height: 22px;
-      width: auto;
-      filter: var(--wordmark-filter);
-      transition: filter 0.4s ease;
-    }
-
-    .footer-brand .fb-tagline {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px 28px;
-    }
-
-    .footer-links a {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      transition: color var(--transition);
-    }
-
-    .footer-links a:hover {
-      color: var(--text-primary);
-    }
-
-    .footer-bottom {
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px solid var(--footer-border);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .footer-bottom p {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .footer-socials {
-      display: flex;
-      gap: 14px;
-    }
-
-    .footer-socials a {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      transition: color var(--transition);
-    }
-
-    .footer-socials a:hover {
-      color: var(--text-primary);
     }
 
     /* RESPONSIVE */
@@ -1081,73 +830,43 @@
         align-items: center;
         gap: 28px;
         padding: 40px;
+        overflow-y: auto;
         transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         border-left: 1px solid var(--glass-border);
       }
-
-      .nav-links.open {
-        right: 0;
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 1.1rem; }
+      .nav-toggle { display: flex; z-index: 1001; }
+      .nav-cta { display: none; }
+      .nav-links .nav-cta-mobile { display: inline-block !important; padding: 12px 32px; border-radius: 50px; background: var(--btn-primary-bg); color: var(--btn-primary-color); font-weight: 600; font-size: 0.9rem; margin-top: 8px; }
+      .nav-links .nav-cta-mobile:hover { background: var(--btn-primary-hover); color: var(--btn-primary-color); }
+      .theme-toggle .toggle-text { display: none; }
+      .nav-dropdown { width: 100%; text-align: center; }
+      .nav-dropdown-toggle { width: 100%; justify-content: center; font-size: 1.1rem; }
+      .nav-dropdown-menu {
+        position: static; left: auto; top: auto; transform: none;
+        min-width: 0; width: 100%; padding: 0; margin-top: 0;
+        background: transparent; border: none; box-shadow: none;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        opacity: 1; visibility: visible;
+        max-height: 0; overflow: hidden;
+        transition: max-height 0.35s ease, padding 0.35s ease;
       }
+      .nav-dropdown.open .nav-dropdown-menu { transform: none; max-height: 520px; padding: 10px 0 0; }
+      .nav-dropdown-menu a { justify-content: center; font-size: 1rem; padding: 10px 12px; }
 
-      .nav-links a {
-        font-size: 1.1rem;
-      }
-
-      .nav-toggle {
-        display: flex;
-        z-index: 1001;
-      }
-
-      .nav-cta {
-        display: none;
-      }
-
-      .nav-links .nav-cta-mobile {
-        display: inline-block !important;
-        padding: 12px 32px;
-        border-radius: 50px;
-        background: var(--btn-primary-bg);
-        color: var(--btn-primary-color);
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-top: 8px;
-      }
-
-      .theme-toggle .toggle-text {
-        display: none;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-      }
+      .features { grid-template-columns: 1fr; }
+      .footer-grid { flex-direction: column; text-align: center; }
+      .footer-bottom { flex-direction: column; text-align: center; }
     }
-
     @media (max-width: 600px) {
       .option-row {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
       }
-
-      .length-control {
-        max-width: 100%;
-        width: 100%;
-      }
-
-      .password-display {
-        padding: 16px 16px 70px 16px;
-      }
-
+      .length-control { max-width: 100%; width: 100%; }
+      .password-display { padding: 16px 16px 70px 16px; }
       .password-actions {
         top: auto;
         bottom: 12px;
@@ -1155,168 +874,50 @@
         transform: none;
       }
     }
-
     @media (max-width: 500px) {
-      .hero {
-        padding: 120px 0 40px;
-      }
-
-      .hero-description {
-        font-size: 1rem;
-      }
-
-      .panel {
-        padding: 22px;
-      }
-
-      .password-text {
-        font-size: 1rem;
-      }
-
-      .icon-btn {
-        width: 34px;
-        height: 34px;
-        font-size: 0.8rem;
-      }
-
-      .nav-brand .wordmark {
-        height: 22px;
-      }
-
-      .hero-title {
-        letter-spacing: -1px;
-      }
-
-      .info {
-        padding: 50px 0 70px;
-      }
-
-      .footer-links {
-        justify-content: center;
-      }
-
-      .buttons button {
-        min-width: 100%;
-      }
+      .hero { padding: 120px 0 40px; }
+      .hero-description { font-size: 1rem; }
+      .panel { padding: 22px; }
+      .password-text { font-size: 1rem; }
+      .icon-btn { width: 34px; height: 34px; font-size: 0.8rem; }
+      .nav-brand .wordmark { height: 22px; }
+      .hero-title { letter-spacing: -1px; }
+      .info { padding: 50px 0 70px; }
+      .footer-links { justify-content: center; }
+      .buttons button { min-width: 100%; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
-    <div class="container">
-
-      <a href="https://deepbyto.github.io/" class="nav-brand" aria-label="DEEPBYTO home">
-        <img
-          src="https://deepbyto.github.io/wordmark.png"
-          alt="DEEPBYTO"
-          class="wordmark"
-        >
-      </a>
-
-      <ul class="nav-links" id="navLinks" role="menubar">
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#about" role="menuitem">About</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#services" role="menuitem">Services</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#labs" role="menuitem">Labs</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#projects" role="menuitem">Projects</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#tools" role="menuitem">Tools</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#demos" role="menuitem">Demos</a>
-        </li>
-
-        <li role="none">
-          <a href="https://deepbyto.github.io/#contact" role="menuitem">Contact</a>
-        </li>
-
-        <li role="none">
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <span class="toggle-icon">
-              <i class="fas fa-moon" id="themeIcon"></i>
-            </span>
-            <span class="toggle-text" id="themeLabel">Dark</span>
-          </button>
-        </li>
-
-        <li role="none" class="nav-cta-mobile" style="display:none;">
-          <a
-            href="https://deepbyto.github.io/#contact"
-            class="nav-cta"
-            style="display:inline-block;"
-          >
-            Contact
-          </a>
-        </li>
-
-      </ul>
-
-      <button
-        class="nav-toggle"
-        id="navToggle"
-        aria-label="Toggle navigation menu"
-        aria-expanded="false"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-    </div>
-  </nav>
+  <!-- HEADER — index.html se auto load -->
+  <div id="site-header"></div>
 
   <!-- HERO -->
   <section class="hero">
-
     <div class="container">
-
       <div class="hero-content">
-
         <div class="hero-badge">
           <span class="badge-dot"></span>
           Free Online Tool
         </div>
-
         <h1 class="hero-title">
           Password <span class="highlight">Generator</span>
         </h1>
-
         <p class="hero-description">
           Generate strong, secure, random passwords instantly.
           100% private — everything runs in your browser.
         </p>
-
       </div>
-
     </div>
-
   </section>
 
   <!-- TOOL -->
   <section class="tool-section">
-
     <div class="container">
-
       <div class="tool">
-
         <div class="panel">
-
           <h2>Generate Your Password</h2>
 
           <!-- PASSWORD DISPLAY -->
@@ -1348,8 +949,6 @@
 
           <!-- OPTIONS -->
           <div class="options">
-
-            <!-- Length -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Length</span>
@@ -1361,7 +960,6 @@
               </div>
             </div>
 
-            <!-- Uppercase -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Uppercase Letters</span>
@@ -1373,7 +971,6 @@
               </label>
             </div>
 
-            <!-- Lowercase -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Lowercase Letters</span>
@@ -1385,7 +982,6 @@
               </label>
             </div>
 
-            <!-- Numbers -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Numbers</span>
@@ -1397,7 +993,6 @@
               </label>
             </div>
 
-            <!-- Symbols -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Symbols</span>
@@ -1409,7 +1004,6 @@
               </label>
             </div>
 
-            <!-- Exclude similar -->
             <div class="option-row">
               <div class="option-label">
                 <span class="opt-title">Exclude Similar</span>
@@ -1420,7 +1014,6 @@
                 <span class="toggle-slider"></span>
               </label>
             </div>
-
           </div>
 
           <!-- BUTTONS -->
@@ -1451,659 +1044,553 @@
 
           <!-- STATUS -->
           <div class="status" id="status"></div>
-
         </div>
-
       </div>
-
     </div>
-
   </section>
 
   <!-- FEATURES -->
   <section class="info">
-
     <div class="container">
-
-      <span class="section-label">
-        Features
-      </span>
-
-      <h2 class="section-title">
-        Why Use Our <span class="highlight">Generator?</span>
-      </h2>
-
+      <span class="section-label">Features</span>
+      <h2 class="section-title">Why Use Our <span class="highlight">Generator?</span></h2>
       <div class="features">
-
         <div class="feature">
           <i class="fas fa-shield-alt feature-icon"></i>
           <h3>100% Private</h3>
-          <p>
-            Passwords are generated entirely in your browser.
-            Nothing is sent to any server.
-          </p>
+          <p>Passwords are generated entirely in your browser. Nothing is sent to any server.</p>
         </div>
-
         <div class="feature">
           <i class="fas fa-random feature-icon"></i>
           <h3>Cryptographically Random</h3>
-          <p>
-            Uses the Web Crypto API for true randomness —
-            not just Math.random().
-          </p>
+          <p>Uses the Web Crypto API for true randomness — not just Math.random().</p>
         </div>
-
         <div class="feature">
           <i class="fas fa-sliders-h feature-icon"></i>
           <h3>Fully Customizable</h3>
-          <p>
-            Choose length, character types, and exclude
-            confusing characters like O and 0.
-          </p>
+          <p>Choose length, character types, and exclude confusing characters like O and 0.</p>
         </div>
-
         <div class="feature">
           <i class="fas fa-tachometer-alt feature-icon"></i>
           <h3>Strength Meter</h3>
-          <p>
-            See instantly how strong your password is —
-            Weak, Fair, Good, or Strong.
-          </p>
+          <p>See instantly how strong your password is — Weak, Fair, Good, or Strong.</p>
         </div>
-
         <div class="feature">
           <i class="fas fa-layer-group feature-icon"></i>
           <h3>Bulk Generation</h3>
-          <p>
-            Generate 10 passwords at once and copy them
-            all with a single click.
-          </p>
+          <p>Generate 10 passwords at once and copy them all with a single click.</p>
         </div>
-
         <div class="feature">
           <i class="fas fa-mobile-alt feature-icon"></i>
           <h3>Works Everywhere</h3>
-          <p>
-            Perfect on phones, tablets, and desktops.
-            No sign-up required.
-          </p>
+          <p>Perfect on phones, tablets, and desktops. No sign-up required.</p>
         </div>
-
       </div>
-
     </div>
-
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-
-    <div class="container">
-
-      <div class="footer-grid">
-
-        <div class="footer-brand">
-
-          <div class="fb-name">
-            <img
-              src="https://deepbyto.github.io/wordmark.png"
-              alt="DEEPBYTO"
-            >
-          </div>
-
-          <div class="fb-tagline">
-            AI &amp; Software Innovation
-          </div>
-
-        </div>
-
-        <div class="footer-links">
-
-          <a
-            href="https://github.com/DEEPBYTO"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-
-          <a
-            href="https://x.com/deepbyto"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            X
-          </a>
-
-          <a
-            href="https://youtube.com/@DEEPBYTO"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            YouTube
-          </a>
-
-          <a
-            href="https://discord.gg/HWhBYHjApe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discord
-          </a>
-
-          <a href="mailto:deepbyto@gmail.com">
-            Email
-          </a>
-
-          <a
-            href="https://whatsapp.com/channel/0029Vb7amWN89ingvwgz6V0T"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
-
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-
-        <p>
-          &copy; 2026 DEEPBYTO. All rights reserved.
-        </p>
-
-        <div class="footer-socials">
-
-          <a
-            href="https://github.com/DEEPBYTO"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-          >
-            GitHub
-          </a>
-
-          <a
-            href="https://x.com/deepbyto"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="X"
-          >
-            X
-          </a>
-
-          <a
-            href="https://youtube.com/@DEEPBYTO"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="YouTube"
-          >
-            YouTube
-          </a>
-
-          <a
-            href="https://discord.gg/HWhBYHjApe"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Discord"
-          >
-            Discord
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </footer>
+  <!-- FOOTER — index.html se auto load -->
+  <div id="site-footer"></div>
 
   <script>
-    // ===== THEME TOGGLE =====
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeLabel = document.getElementById('themeLabel');
+    (function () {
+      'use strict';
 
-    function setTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('deepbyto-theme', theme);
-
-      if (theme === 'light') {
-        themeIcon.className = 'fas fa-sun';
-        themeLabel.textContent = 'Light';
-      } else {
-        themeIcon.className = 'fas fa-moon';
-        themeLabel.textContent = 'Dark';
-      }
-
-      const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) {
-        meta.content = theme === 'light' ? '#f5f5f5' : '#000000';
-      }
-    }
-
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
-      setTheme(next);
-    }
-
-    const savedTheme = localStorage.getItem('deepbyto-theme') || 'dark';
-    setTheme(savedTheme);
-
-    themeToggle.addEventListener('click', toggleTheme);
-
-    // ===== NAVBAR =====
-    const navbar = document.getElementById('navbar');
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      navToggle.classList.toggle('active');
-      navToggle.setAttribute('aria-expanded', isOpen);
-    });
-
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.focus();
-      }
-    });
-
-    // ===== PASSWORD GENERATOR LOGIC =====
-
-    const CHARS = {
-      upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      lower: 'abcdefghijklmnopqrstuvwxyz',
-      numbers: '0123456789',
-      symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
-    };
-
-    const SIMILAR_CHARS = /[0Ol1I]/g;
-
-    let currentPassword = '';
-
-    // Cryptographically secure random integer
-    function secureRandom(max) {
-      const array = new Uint32Array(1);
-      crypto.getRandomValues(array);
-      return array[0] % max;
-    }
-
-    // Fisher-Yates shuffle using secure random
-    function secureShuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = secureRandom(i + 1);
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    // Build character pool from selected options
-    function buildPool() {
-      let pool = '';
-      if (document.getElementById('optUpper').checked) pool += CHARS.upper;
-      if (document.getElementById('optLower').checked) pool += CHARS.lower;
-      if (document.getElementById('optNumbers').checked) pool += CHARS.numbers;
-      if (document.getElementById('optSymbols').checked) pool += CHARS.symbols;
-
-      if (document.getElementById('optExcludeSimilar').checked) {
-        pool = pool.replace(SIMILAR_CHARS, '');
-      }
-
-      return pool;
-    }
-
-    // Get all active character pools separately (for guaranteed inclusion)
-    function getActivePools() {
-      const pools = [];
-      const excludeSimilar = document.getElementById('optExcludeSimilar').checked;
-
-      function clean(str) {
-        return excludeSimilar ? str.replace(SIMILAR_CHARS, '') : str;
-      }
-
-      if (document.getElementById('optUpper').checked) {
-        const p = clean(CHARS.upper);
-        if (p) pools.push(p);
-      }
-      if (document.getElementById('optLower').checked) {
-        const p = clean(CHARS.lower);
-        if (p) pools.push(p);
-      }
-      if (document.getElementById('optNumbers').checked) {
-        const p = clean(CHARS.numbers);
-        if (p) pools.push(p);
-      }
-      if (document.getElementById('optSymbols').checked) {
-        const p = clean(CHARS.symbols);
-        if (p) pools.push(p);
-      }
-
-      return pools;
-    }
-
-    // Generate a single password
-    function generateOne(length) {
-      const pools = getActivePools();
-
-      if (pools.length === 0) {
-        return null;
-      }
-
-      const pool = pools.join('');
-      const password = [];
-
-      // Guarantee at least one character from each active pool
-      pools.forEach(p => {
-        if (password.length < length) {
-          password.push(p[secureRandom(p.length)]);
+      /* ================= THEME ================= */
+      function applyThemeUI(theme) {
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+        if (themeIcon && themeLabel) {
+          if (theme === 'light') {
+            themeIcon.className = 'fas fa-sun';
+            themeLabel.textContent = 'Light';
+          } else {
+            themeIcon.className = 'fas fa-moon';
+            themeLabel.textContent = 'Dark';
+          }
         }
-      });
-
-      // Fill the rest randomly
-      while (password.length < length) {
-        password.push(pool[secureRandom(pool.length)]);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = theme === 'light' ? '#f5f5f5' : '#000000';
       }
 
-      // Shuffle to avoid predictable first characters
-      secureShuffle(password);
-
-      return password.slice(0, length).join('');
-    }
-
-    // Calculate password strength (0-4)
-    function calculateStrength(password) {
-      if (!password) return 0;
-
-      let score = 0;
-      const length = password.length;
-
-      // Length scoring
-      if (length >= 8) score++;
-      if (length >= 12) score++;
-      if (length >= 16) score++;
-
-      // Character variety
-      let variety = 0;
-      if (/[a-z]/.test(password)) variety++;
-      if (/[A-Z]/.test(password)) variety++;
-      if (/[0-9]/.test(password)) variety++;
-      if (/[^a-zA-Z0-9]/.test(password)) variety++;
-
-      if (variety >= 3) score++;
-      if (variety === 4 && length >= 12) score++;
-
-      // Cap at 4
-      if (score > 4) score = 4;
-      if (score < 1 && length > 0) score = 1;
-
-      return score;
-    }
-
-    function updateStrengthMeter(password) {
-      const score = calculateStrength(password);
-      const valueEl = document.getElementById('strengthValue');
-      const segments = [
-        document.getElementById('seg1'),
-        document.getElementById('seg2'),
-        document.getElementById('seg3'),
-        document.getElementById('seg4')
-      ];
-
-      // Reset
-      segments.forEach(s => {
-        s.classList.remove('active', 'weak', 'fair', 'good', 'strong');
-      });
-      valueEl.classList.remove('weak', 'fair', 'good', 'strong');
-
-      if (!password) {
-        valueEl.textContent = '—';
-        return;
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('deepbyto-theme', theme);
+        applyThemeUI(theme);
       }
 
-      let label, className;
-      if (score <= 1) {
-        label = 'Weak';
-        className = 'weak';
-      } else if (score === 2) {
-        label = 'Fair';
-        className = 'fair';
-      } else if (score === 3) {
-        label = 'Good';
-        className = 'good';
-      } else {
-        label = 'Strong';
-        className = 'strong';
+      const savedTheme = localStorage.getItem('deepbyto-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      /* ================= HEADER / FOOTER LOADER ================= */
+      async function loadComponent(templateId, targetSelector, sourcePage) {
+        const target = document.querySelector(targetSelector);
+        if (!target) return;
+        const tpl = document.getElementById(templateId);
+        if (tpl) { target.innerHTML = tpl.innerHTML; return; }
+        try {
+          const res = await fetch(sourcePage, { cache: 'no-store' });
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const remote = doc.getElementById(templateId);
+          if (remote) target.innerHTML = remote.innerHTML;
+        } catch (e) { console.error('Component load failed:', templateId, e); }
       }
 
-      valueEl.textContent = label;
-      valueEl.classList.add(className);
+      /* ================= HEADER EVENTS ================= */
+      function initHeaderEvents() {
+        const navbar = document.getElementById('navbar');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        const themeToggle = document.getElementById('themeToggle');
+        const navDropdowns = document.querySelectorAll('.nav-dropdown');
 
-      // Fill segments
-      const activeCount = score;
-      for (let i = 0; i < activeCount && i < 4; i++) {
-        segments[i].classList.add('active', className);
-      }
-    }
+        applyThemeUI(document.documentElement.getAttribute('data-theme') || 'dark');
 
-    function onLengthChange(val) {
-      document.getElementById('lengthValue').textContent = val;
-      generatePassword();
-    }
+        if (themeToggle) {
+          themeToggle.addEventListener('click', () => {
+            const cur = document.documentElement.getAttribute('data-theme');
+            setTheme(cur === 'light' ? 'dark' : 'light');
+          });
+        }
 
-    function generatePassword() {
-      const length = parseInt(document.getElementById('lengthSlider').value, 10);
-      const status = document.getElementById('status');
-      status.className = 'status';
-      status.textContent = '';
+        if (navbar) {
+          const onScroll = () => {
+            if (window.scrollY > 20) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+          };
+          window.addEventListener('scroll', onScroll);
+          onScroll();
+        }
 
-      const pool = buildPool();
-      if (!pool) {
-        document.getElementById('passwordText').textContent = 'Select at least one character type';
-        currentPassword = '';
-        updateStrengthMeter('');
-        status.className = 'status error';
-        status.textContent = 'Please enable at least one character type.';
-        return;
-      }
+        function closeAllDropdowns() {
+          navDropdowns.forEach(dd => {
+            dd.classList.remove('open');
+            const t = dd.querySelector('.nav-dropdown-toggle');
+            if (t) t.setAttribute('aria-expanded', 'false');
+          });
+        }
 
-      const pwd = generateOne(length);
-      if (!pwd) {
-        document.getElementById('passwordText').textContent = 'Could not generate password';
-        currentPassword = '';
-        updateStrengthMeter('');
-        return;
-      }
+        if (navToggle && navLinks) {
+          navToggle.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            navToggle.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', open);
+            if (!open) closeAllDropdowns();
+          });
+          navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            navToggle.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+          }));
+        }
 
-      currentPassword = pwd;
-      document.getElementById('passwordText').textContent = pwd;
-      updateStrengthMeter(pwd);
-      status.className = 'status success';
-      status.textContent = 'Password generated.';
-    }
+        navDropdowns.forEach(dd => {
+          const toggle = dd.querySelector('.nav-dropdown-toggle');
+          if (!toggle) return;
+          const ddText = toggle.querySelector('.dd-text');
+          const ddArrow = toggle.querySelector('.dd-arrow');
 
-    function copyPassword() {
-      const status = document.getElementById('status');
-      if (!currentPassword) {
-        status.className = 'status error';
-        status.textContent = 'No password to copy. Generate one first.';
-        return;
-      }
-
-      navigator.clipboard.writeText(currentPassword)
-        .then(() => {
-          status.className = 'status success';
-          status.textContent = 'Password copied to clipboard!';
-        })
-        .catch(() => {
-          const ta = document.createElement('textarea');
-          ta.value = currentPassword;
-          document.body.appendChild(ta);
-          ta.select();
-          try {
-            document.execCommand('copy');
-            status.className = 'status success';
-            status.textContent = 'Password copied to clipboard!';
-          } catch {
-            status.className = 'status error';
-            status.textContent = 'Could not copy. Please copy manually.';
+          if (ddText && ddText.dataset.scroll) {
+            ddText.addEventListener('click', (e) => {
+              e.preventDefault(); e.stopPropagation();
+              const sec = ddText.dataset.scroll;
+              const t = document.getElementById(sec);
+              if (t) {
+                const top = t.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top, behavior: 'smooth' });
+              } else {
+                window.location.href = '../index.html#' + sec;
+              }
+              closeAllDropdowns();
+            });
           }
-          document.body.removeChild(ta);
-        });
-    }
 
-    // BULK GENERATION
-    let bulkPasswords = [];
-
-    function generateBulk() {
-      const status = document.getElementById('status');
-      const length = parseInt(document.getElementById('lengthSlider').value, 10);
-      const pool = buildPool();
-
-      status.className = 'status';
-      status.textContent = '';
-
-      if (!pool) {
-        status.className = 'status error';
-        status.textContent = 'Please enable at least one character type.';
-        return;
-      }
-
-      bulkPasswords = [];
-      for (let i = 0; i < 10; i++) {
-        bulkPasswords.push(generateOne(length));
-      }
-
-      renderBulk();
-      status.className = 'status success';
-      status.textContent = '10 passwords generated.';
-    }
-
-    function renderBulk() {
-      const section = document.getElementById('bulkSection');
-      const list = document.getElementById('bulkList');
-
-      if (bulkPasswords.length === 0) {
-        section.style.display = 'none';
-        list.innerHTML = '';
-        return;
-      }
-
-      section.style.display = 'block';
-      list.innerHTML = '';
-
-      bulkPasswords.forEach((pwd, idx) => {
-        const item = document.createElement('div');
-        item.className = 'bulk-item';
-        item.innerHTML = `
-          <span class="bulk-index">${idx + 1}.</span>
-          <span class="bulk-pass">${escapeHtml(pwd)}</span>
-          <button class="bulk-copy" title="Copy" onclick="copyText('${escapeAttr(pwd)}')">
-            <i class="fas fa-copy"></i>
-          </button>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    function copyAllBulk() {
-      const status = document.getElementById('status');
-      if (bulkPasswords.length === 0) {
-        status.className = 'status error';
-        status.textContent = 'No bulk passwords to copy.';
-        return;
-      }
-
-      const text = bulkPasswords.join('\n');
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          status.className = 'status success';
-          status.textContent = 'All 10 passwords copied to clipboard!';
-        })
-        .catch(() => {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          try {
-            document.execCommand('copy');
-            status.className = 'status success';
-            status.textContent = 'All 10 passwords copied to clipboard!';
-          } catch {
-            status.className = 'status error';
-            status.textContent = 'Could not copy.';
+          if (ddArrow) {
+            ddArrow.addEventListener('click', (e) => {
+              e.preventDefault(); e.stopPropagation();
+              const willOpen = !dd.classList.contains('open');
+              closeAllDropdowns();
+              if (willOpen) { dd.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); }
+            });
           }
-          document.body.removeChild(ta);
-        });
-    }
 
-    function copyText(text) {
-      const status = document.getElementById('status');
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          status.className = 'status success';
-          status.textContent = 'Copied to clipboard!';
-        })
-        .catch(() => {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          try {
-            document.execCommand('copy');
-            status.className = 'status success';
-            status.textContent = 'Copied to clipboard!';
-          } catch {
-            status.className = 'status error';
-            status.textContent = 'Could not copy.';
+          if (!ddText && !ddArrow) {
+            toggle.addEventListener('click', (e) => {
+              e.preventDefault(); e.stopPropagation();
+              const willOpen = !dd.classList.contains('open');
+              closeAllDropdowns();
+              if (willOpen) { dd.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); }
+            });
           }
-          document.body.removeChild(ta);
+
+          dd.querySelectorAll('.nav-dropdown-menu a').forEach(a => a.addEventListener('click', closeAllDropdowns));
         });
-    }
 
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
+        document.addEventListener('click', e => {
+          if (!e.target.closest('.nav-dropdown')) closeAllDropdowns();
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') closeAllDropdowns();
+        });
+      }
 
-    function escapeAttr(str) {
-      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
-    }
+      /* ================= PASSWORD GENERATOR LOGIC ================= */
+      const CHARS = {
+        upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        lower: 'abcdefghijklmnopqrstuvwxyz',
+        numbers: '0123456789',
+        symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+      };
+      const SIMILAR_CHARS = /[0Ol1I]/g;
+      let currentPassword = '';
+      let bulkPasswords = [];
 
-    // ===== INITIAL GENERATE ON LOAD =====
-    window.addEventListener('load', () => {
-      generatePassword();
-    });
+      function secureRandom(max) {
+        const array = new Uint32Array(1);
+        crypto.getRandomValues(array);
+        return array[0] % max;
+      }
 
-    // Keyboard shortcut: Ctrl/Cmd + G to regenerate
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') {
-        e.preventDefault();
+      function secureShuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = secureRandom(i + 1);
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function buildPool() {
+        let pool = '';
+        if (document.getElementById('optUpper').checked) pool += CHARS.upper;
+        if (document.getElementById('optLower').checked) pool += CHARS.lower;
+        if (document.getElementById('optNumbers').checked) pool += CHARS.numbers;
+        if (document.getElementById('optSymbols').checked) pool += CHARS.symbols;
+        if (document.getElementById('optExcludeSimilar').checked) {
+          pool = pool.replace(SIMILAR_CHARS, '');
+        }
+        return pool;
+      }
+
+      function getActivePools() {
+        const pools = [];
+        const excludeSimilar = document.getElementById('optExcludeSimilar').checked;
+
+        function clean(str) {
+          return excludeSimilar ? str.replace(SIMILAR_CHARS, '') : str;
+        }
+
+        if (document.getElementById('optUpper').checked) {
+          const p = clean(CHARS.upper);
+          if (p) pools.push(p);
+        }
+        if (document.getElementById('optLower').checked) {
+          const p = clean(CHARS.lower);
+          if (p) pools.push(p);
+        }
+        if (document.getElementById('optNumbers').checked) {
+          const p = clean(CHARS.numbers);
+          if (p) pools.push(p);
+        }
+        if (document.getElementById('optSymbols').checked) {
+          const p = clean(CHARS.symbols);
+          if (p) pools.push(p);
+        }
+
+        return pools;
+      }
+
+      function generateOne(length) {
+        const pools = getActivePools();
+        if (pools.length === 0) return null;
+
+        const pool = pools.join('');
+        const password = [];
+
+        pools.forEach(p => {
+          if (password.length < length) {
+            password.push(p[secureRandom(p.length)]);
+          }
+        });
+
+        while (password.length < length) {
+          password.push(pool[secureRandom(pool.length)]);
+        }
+
+        secureShuffle(password);
+        return password.slice(0, length).join('');
+      }
+
+      function calculateStrength(password) {
+        if (!password) return 0;
+        let score = 0;
+        const length = password.length;
+
+        if (length >= 8) score++;
+        if (length >= 12) score++;
+        if (length >= 16) score++;
+
+        let variety = 0;
+        if (/[a-z]/.test(password)) variety++;
+        if (/[A-Z]/.test(password)) variety++;
+        if (/[0-9]/.test(password)) variety++;
+        if (/[^a-zA-Z0-9]/.test(password)) variety++;
+
+        if (variety >= 3) score++;
+        if (variety === 4 && length >= 12) score++;
+
+        if (score > 4) score = 4;
+        if (score < 1 && length > 0) score = 1;
+
+        return score;
+      }
+
+      function updateStrengthMeter(password) {
+        const score = calculateStrength(password);
+        const valueEl = document.getElementById('strengthValue');
+        const segments = [
+          document.getElementById('seg1'),
+          document.getElementById('seg2'),
+          document.getElementById('seg3'),
+          document.getElementById('seg4')
+        ];
+
+        segments.forEach(s => {
+          s.classList.remove('active', 'weak', 'fair', 'good', 'strong');
+        });
+        valueEl.classList.remove('weak', 'fair', 'good', 'strong');
+
+        if (!password) {
+          valueEl.textContent = '—';
+          return;
+        }
+
+        let label, className;
+        if (score <= 1) { label = 'Weak'; className = 'weak'; }
+        else if (score === 2) { label = 'Fair'; className = 'fair'; }
+        else if (score === 3) { label = 'Good'; className = 'good'; }
+        else { label = 'Strong'; className = 'strong'; }
+
+        valueEl.textContent = label;
+        valueEl.classList.add(className);
+
+        for (let i = 0; i < score && i < 4; i++) {
+          segments[i].classList.add('active', className);
+        }
+      }
+
+      function onLengthChange(val) {
+        document.getElementById('lengthValue').textContent = val;
         generatePassword();
       }
-    });
+
+      function generatePassword() {
+        const length = parseInt(document.getElementById('lengthSlider').value, 10);
+        const status = document.getElementById('status');
+        status.className = 'status';
+        status.textContent = '';
+
+        const pool = buildPool();
+        if (!pool) {
+          document.getElementById('passwordText').textContent = 'Select at least one character type';
+          currentPassword = '';
+          updateStrengthMeter('');
+          status.className = 'status error';
+          status.textContent = 'Please enable at least one character type.';
+          return;
+        }
+
+        const pwd = generateOne(length);
+        if (!pwd) {
+          document.getElementById('passwordText').textContent = 'Could not generate password';
+          currentPassword = '';
+          updateStrengthMeter('');
+          return;
+        }
+
+        currentPassword = pwd;
+        document.getElementById('passwordText').textContent = pwd;
+        updateStrengthMeter(pwd);
+        status.className = 'status success';
+        status.textContent = 'Password generated.';
+      }
+
+      function copyPassword() {
+        const status = document.getElementById('status');
+        if (!currentPassword) {
+          status.className = 'status error';
+          status.textContent = 'No password to copy. Generate one first.';
+          return;
+        }
+
+        navigator.clipboard.writeText(currentPassword)
+          .then(() => {
+            status.className = 'status success';
+            status.textContent = 'Password copied to clipboard!';
+          })
+          .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = currentPassword;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand('copy');
+              status.className = 'status success';
+              status.textContent = 'Password copied to clipboard!';
+            } catch {
+              status.className = 'status error';
+              status.textContent = 'Could not copy. Please copy manually.';
+            }
+            document.body.removeChild(ta);
+          });
+      }
+
+      function generateBulk() {
+        const status = document.getElementById('status');
+        const length = parseInt(document.getElementById('lengthSlider').value, 10);
+        const pool = buildPool();
+
+        status.className = 'status';
+        status.textContent = '';
+
+        if (!pool) {
+          status.className = 'status error';
+          status.textContent = 'Please enable at least one character type.';
+          return;
+        }
+
+        bulkPasswords = [];
+        for (let i = 0; i < 10; i++) {
+          bulkPasswords.push(generateOne(length));
+        }
+
+        renderBulk();
+        status.className = 'status success';
+        status.textContent = '10 passwords generated.';
+      }
+
+      function renderBulk() {
+        const section = document.getElementById('bulkSection');
+        const list = document.getElementById('bulkList');
+
+        if (bulkPasswords.length === 0) {
+          section.style.display = 'none';
+          list.innerHTML = '';
+          return;
+        }
+
+        section.style.display = 'block';
+        list.innerHTML = '';
+
+        bulkPasswords.forEach((pwd, idx) => {
+          const item = document.createElement('div');
+          item.className = 'bulk-item';
+          item.innerHTML = `
+            <span class="bulk-index">${idx + 1}.</span>
+            <span class="bulk-pass">${escapeHtml(pwd)}</span>
+            <button class="bulk-copy" title="Copy" onclick="copyText('${escapeAttr(pwd)}')">
+              <i class="fas fa-copy"></i>
+            </button>
+          `;
+          list.appendChild(item);
+        });
+      }
+
+      function copyAllBulk() {
+        const status = document.getElementById('status');
+        if (bulkPasswords.length === 0) {
+          status.className = 'status error';
+          status.textContent = 'No bulk passwords to copy.';
+          return;
+        }
+
+        const text = bulkPasswords.join('\n');
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            status.className = 'status success';
+            status.textContent = 'All 10 passwords copied to clipboard!';
+          })
+          .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand('copy');
+              status.className = 'status success';
+              status.textContent = 'All 10 passwords copied to clipboard!';
+            } catch {
+              status.className = 'status error';
+              status.textContent = 'Could not copy.';
+            }
+            document.body.removeChild(ta);
+          });
+      }
+
+      function copyText(text) {
+        const status = document.getElementById('status');
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            status.className = 'status success';
+            status.textContent = 'Copied to clipboard!';
+          })
+          .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand('copy');
+              status.className = 'status success';
+              status.textContent = 'Copied to clipboard!';
+            } catch {
+              status.className = 'status error';
+              status.textContent = 'Could not copy.';
+            }
+            document.body.removeChild(ta);
+          });
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function escapeAttr(str) {
+        return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      }
+
+      /* ================= BOOT ================= */
+      (async function boot() {
+        await Promise.all([
+          loadComponent('header-template', '#site-header', '../../index.html'),
+          loadComponent('footer-template', '#site-footer', '../../index.html')
+        ]);
+        initHeaderEvents();
+
+        // Expose to global scope for inline onclick
+        window.generatePassword = generatePassword;
+        window.generateBulk = generateBulk;
+        window.copyPassword = copyPassword;
+        window.copyAllBulk = copyAllBulk;
+        window.copyText = copyText;
+        window.onLengthChange = onLengthChange;
+
+        // Initial generate
+        generatePassword();
+
+        // Ctrl/Cmd + G shortcut
+        document.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') {
+            e.preventDefault();
+            generatePassword();
+          }
+        });
+
+        console.log('DEEPBYTO | Password Generator initialized');
+      })();
+    })();
   </script>
 
 </body>
